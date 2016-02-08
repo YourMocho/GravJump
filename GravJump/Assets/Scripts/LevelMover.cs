@@ -7,6 +7,7 @@ public class LevelMover : MonoBehaviour {
     public float Xspeed = 5;
     private Vector2 movementVector;
     private Rigidbody2D rigidbody;
+    public float levelSpawnPoint = 0;
     //public bool moving = true;
 
     void Start () {
@@ -18,7 +19,11 @@ public class LevelMover : MonoBehaviour {
         if (!GameManager.paused)
         {
             rigidbody.MovePosition(rigidbody.position - movementVector * Time.deltaTime);
+
+           // levelSpawnPoint = transform.position.x - GameManager.player.transform.position.x;
         } 
+
+
     }
 
     public void ChangeSpeed(float speed)

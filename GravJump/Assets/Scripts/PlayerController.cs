@@ -5,8 +5,8 @@ public class PlayerController : MonoBehaviour {
 
     private Rigidbody2D rigidbody;
     private bool isTouchingFloor = false;
-    private Vector3 spawnPoint;
-    private float leftBoundary;
+    private Vector3 playerSpawnPoint;
+    public float leftBoundary;
     private float upperBoundary;
     private float lowerBoundary;
     private SpriteRenderer renderer;
@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
 
     void Start () {
         rigidbody = GetComponent<Rigidbody2D>();
-        spawnPoint = transform.position;
+        playerSpawnPoint = transform.position;
 
         renderer = GetComponent<SpriteRenderer>();
 
@@ -24,11 +24,12 @@ public class PlayerController : MonoBehaviour {
         upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + renderer.bounds.size.y / 2;
         lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - renderer.bounds.size.y / 2;
 
+        print(leftBoundary + "ffffffffffffff");
     }
 	
 	// Update is called once per frame
 	void Update () {
-	    if((Input.GetButtonDown("Fire1") || Input.touchCount > 0) && isTouchingFloor && !GameManager.paused)
+	    if((Input.GetButtonDown("Fire1") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && isTouchingFloor && !GameManager.paused)
         {
             rigidbody.gravityScale *= -1;
         }
@@ -36,20 +37,20 @@ public class PlayerController : MonoBehaviour {
         //moving off screen --> death
         if(transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary) {
             print("player has died");
+            GameManager.ResetMapToSpawnPoint();
             RespawnPlayer();
         }
     }
 
     private void RespawnPlayer()
     {
-        transform.position = spawnPoint;
+        GameManager.StartCountdown();
+        transform.position = playerSpawnPoint;
         rigidbody.velocity = Vector3.zero;
         if (rigidbody.gravityScale < 0)
         {
             rigidbody.gravityScale *= -1;
         }
-
-        GameManager.StartCountdown();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -57,7 +58,6 @@ public class PlayerController : MonoBehaviour {
         if(collision.collider.tag == "JumpableFloor")
         {
             isTouchingFloor = true;
-            print("Touching");
         }
     }
 
@@ -66,7 +66,6 @@ public class PlayerController : MonoBehaviour {
         if (collision.collider.tag == "JumpableFloor")
         {
             isTouchingFloor = false;
-            print("Not Touching");
         }
 
         rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);

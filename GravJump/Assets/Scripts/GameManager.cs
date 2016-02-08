@@ -5,6 +5,9 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
     private static Text countdownText;
+    private static LevelMover levelMover;
+    public static PlayerController player;
+
     private static int countdown;
     private static float timer;
     public static bool paused;
@@ -15,6 +18,8 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
         countdownText = GameObject.Find("CountdownText").GetComponent<Text>();
+        levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
         StartCountdown();
     }
 	
@@ -44,5 +49,10 @@ public class GameManager : MonoBehaviour {
         countdownText.gameObject.SetActive(true);
         countdown = 3;
         timer = Time.time;
+    }
+
+    public static void ResetMapToSpawnPoint()
+    {
+        levelMover.transform.position = new Vector3(levelMover.levelSpawnPoint, 0, 0);
     }
 }
