@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if(Input.GetButtonDown("Jump") && isTouchingFloor)
+	    if((Input.GetButtonDown("Fire1") || Input.touchCount > 0) && isTouchingFloor && !GameManager.paused)
         {
             rigidbody.gravityScale *= -1;
         }
@@ -38,7 +38,6 @@ public class PlayerController : MonoBehaviour {
             print("player has died");
             RespawnPlayer();
         }
-
     }
 
     private void RespawnPlayer()
@@ -50,6 +49,7 @@ public class PlayerController : MonoBehaviour {
             rigidbody.gravityScale *= -1;
         }
 
+        GameManager.StartCountdown();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -70,7 +70,6 @@ public class PlayerController : MonoBehaviour {
         }
 
         rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
-        // rigidbody.angularVelocity = 0f;
     }
 
 

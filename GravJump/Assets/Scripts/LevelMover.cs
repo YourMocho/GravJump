@@ -4,11 +4,10 @@ using UnityEngine.UI;
 
 public class LevelMover : MonoBehaviour {
 
-   // private Transform transform;
     public float Xspeed = 5;
     private Vector2 movementVector;
     private Rigidbody2D rigidbody;
-    public bool moving = true;
+    //public bool moving = true;
 
     void Start () {
         movementVector = new Vector2(Xspeed, 0);
@@ -16,7 +15,7 @@ public class LevelMover : MonoBehaviour {
     }
 
 	void Update () {
-        if (moving)
+        if (!GameManager.paused)
         {
             rigidbody.MovePosition(rigidbody.position - movementVector * Time.deltaTime);
         } 
@@ -24,6 +23,9 @@ public class LevelMover : MonoBehaviour {
 
     public void ChangeSpeed(float speed)
     {
-        movementVector.x += speed;
+        if (movementVector.x + speed > GameManager.minSpeed && movementVector.x + speed < GameManager.maxSpeed)
+        {
+            movementVector.x += speed;
+        }
     }
 }
