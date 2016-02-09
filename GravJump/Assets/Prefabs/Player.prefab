@@ -12,6 +12,7 @@ GameObject:
   - 58: {fileID: 5871080}
   - 50: {fileID: 5056966}
   - 114: {fileID: 11497424}
+  - 61: {fileID: 6154656}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 105070}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,7 +43,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 3
+  m_GravityScale: 5
   m_IsKinematic: 0
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -54,7 +55,7 @@ CircleCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 105070}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 0af6377d1ad6d0244aaec9a3243dc823, type: 2}
   m_IsTrigger: 0
@@ -62,6 +63,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
+--- !u!61 &6154656
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105070}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2}
 --- !u!114 &11497424
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,6 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 650335cdfabb2f642bfbceb1492f655f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftBoundary: 0
 --- !u!212 &21270644
 SpriteRenderer:
   m_ObjectHideFlags: 1
