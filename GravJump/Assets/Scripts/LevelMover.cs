@@ -33,4 +33,9 @@ public class LevelMover : MonoBehaviour {
             movementVector.x += speed;
         }
     }
+
+    public void SetSpeed(float speed)
+    {
+        movementVector.x = speed;
+    }
 }

@@ -6,17 +6,19 @@ using UnityEngine.EventSystems;
 public class GameManager : MonoBehaviour {
 
     private static Text countdownText;
-    private static LevelMover levelMover;
+    public static LevelMover levelMover;
     public static PlayerController playerController;
     public static GameObject invertColoursPlane;
     private static Text scoreText;
+    private static GameObject backButton;
 
     private static int score = 0;
     private static int countdown;
     private static float timer;
     public static bool gameStarted;
     public static bool paused = false;
-    public static int maxSpeed = 15;
+    public static int startSpeed = 12;
+    public static int maxSpeed = 25;
     public static int minSpeed = 3;
 
     public static Color normalColour; 
@@ -28,6 +30,8 @@ public class GameManager : MonoBehaviour {
         normalColour = GameObject.Find("GroundBlock").GetComponent<SpriteRenderer>().color;
         invertColoursPlane = GameObject.Find("InvertColoursPlane");
         invertColoursPlane.SetActive(false);
+        backButton = GameObject.Find("BackButton");
+        backButton.SetActive(false);
         countdownText = GameObject.Find("CountdownText").GetComponent<Text>();
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
@@ -70,6 +74,8 @@ public class GameManager : MonoBehaviour {
         countdownText.gameObject.SetActive(true);
         countdown = 3;
         timer = Time.time;
+        paused = false;
+        levelMover.SetSpeed(startSpeed);
     }
 
     public static void PlayerDied()
@@ -102,11 +108,13 @@ public class GameManager : MonoBehaviour {
                 playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY;
                 countdownText.gameObject.SetActive(true);
                 countdownText.text = "Paused";
+                backButton.SetActive(true);
             }
             else
             {
                 countdownText.gameObject.SetActive(false);
                 playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+                backButton.SetActive(false);
             }
         }
     }

@@ -7,7 +7,7 @@ public class SpeedPickUp : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        transform.parent.GetComponent<LevelMover>().ChangeSpeed(speedChange);
+        GameManager.levelMover.ChangeSpeed(speedChange);
         Destroy(gameObject);
     }
 }
