@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
 
     private static Text countdownText;
     private static LevelMover levelMover;
-    public static PlayerController player;
+    public static PlayerController playerController;
     public static GameObject invertColoursPlane;
     private static Text scoreText;
 
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour {
         countdownText = GameObject.Find("CountdownText").GetComponent<Text>();
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
-        player = GameObject.Find("Player").GetComponent<PlayerController>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         scoreText.text = "";
         StartCountdown();
     }
@@ -61,8 +61,6 @@ public class GameManager : MonoBehaviour {
         {
             scoreText.text = score.ToString();
         }
-
-        print(GameObject.Find("EventSystem").GetComponent<EventSystem>().IsPointerOverGameObject());
     }
 
     public static void StartCountdown()
@@ -93,9 +91,23 @@ public class GameManager : MonoBehaviour {
         score = (int)(levelMover.transform.position.x * -1);
     }
 
-    public void TogglePause()
+    public static void TogglePause()
     {
-        paused = !paused;
-       // print(paused);
+        if (gameStarted)
+        {
+            paused = !paused;
+
+            if (paused)
+            {
+                playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY;
+                countdownText.gameObject.SetActive(true);
+                countdownText.text = "Paused";
+            }
+            else
+            {
+                countdownText.gameObject.SetActive(false);
+                playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
+        }
     }
 }

@@ -29,17 +29,28 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        /*
 	    if((Input.GetButtonDown("Fire1") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && isTouchingFloor && GameManager.gameStarted && !GameManager.paused)
         {
             rigidbody.gravityScale *= -1;
             GameManager.invertColoursPlane.SetActive(!GameManager.invertColoursPlane.activeSelf);
         }
+        */
 
         //moving off screen --> death
         if(transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary) {
             print("player has died");
             GameManager.PlayerDied();
             RespawnPlayer();
+        }
+    }
+
+    public void ChangeGravity()
+    {
+        if(isTouchingFloor && GameManager.gameStarted && !GameManager.paused)
+        {
+            rigidbody.gravityScale *= -1;
+            GameManager.invertColoursPlane.SetActive(!GameManager.invertColoursPlane.activeSelf);
         }
     }
 
