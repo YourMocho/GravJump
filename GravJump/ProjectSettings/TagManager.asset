@@ -39,6 +39,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Level
+    uniqueID: 1546482031
+    locked: 0
+  - name: PickUps
+    uniqueID: 2142374331
+    locked: 0
+  - name: Player
+    uniqueID: 2078305009
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

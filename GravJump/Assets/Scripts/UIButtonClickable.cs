@@ -35,6 +35,7 @@ public class UIButtonClickable : MonoBehaviour, IPointerClickHandler {
             if (gameObject.name.Equals("PauseButton"))
             {
                 GameManager.TogglePause();
+                GetComponent<PauseButton>().ToggleSprite();
             }
             if (gameObject.name.Equals("BackButton"))
             {

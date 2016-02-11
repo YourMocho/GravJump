@@ -1,0 +1,111 @@
+fileFormatVersion: 2
+guid: e503531ff0f50b74ab5e6d09473c8639
+timeCreated: 1455174281
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: pauseplay_0
+    21300002: pauseplay_1
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: pauseplay_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 200
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 55, y: 97}
+        - {x: 47, y: 100}
+        - {x: -46, y: 100}
+        - {x: -66, y: 97}
+        - {x: -99, y: 56}
+        - {x: -100, y: 45}
+        - {x: -100, y: -34}
+        - {x: -85, y: -59}
+        - {x: -78, y: -68}
+        - {x: -69, y: -91}
+        - {x: -35, y: -100}
+        - {x: 53, y: -100}
+        - {x: 74, y: -85}
+        - {x: 100, y: -40}
+        - {x: 100, y: 45}
+    - name: pauseplay_1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 0
+        width: 200
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 55, y: 97}
+        - {x: 47, y: 100}
+        - {x: -46, y: 100}
+        - {x: -66, y: 97}
+        - {x: -99, y: 56}
+        - {x: -100, y: 45}
+        - {x: -100, y: -34}
+        - {x: -85, y: -59}
+        - {x: -78, y: -68}
+        - {x: -69, y: -91}
+        - {x: -35, y: -100}
+        - {x: 53, y: -100}
+        - {x: 74, y: -85}
+        - {x: 100, y: -40}
+        - {x: 100, y: 45}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

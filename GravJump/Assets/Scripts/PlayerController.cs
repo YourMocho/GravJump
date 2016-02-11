@@ -4,14 +4,13 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
     private Rigidbody2D rigidbody;
-    private bool isTouchingFloor = false;
     private Vector3 playerSpawnPoint;
     public float leftBoundary;
     private float upperBoundary;
     private float lowerBoundary;
     private SpriteRenderer renderer;
     private LevelMover levelMover;
-
+    public int numberOfColliders = 0;
 
 
     void Start () {
@@ -30,7 +29,7 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         /*
-	    if((Input.GetButtonDown("Fire1") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && isTouchingFloor && GameManager.gameStarted && !GameManager.paused)
+	    if((Input.GetButtonDown("Fire1") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && numberOfColliders > 0 && GameManager.gameStarted && !GameManager.paused)
         {
             rigidbody.gravityScale *= -1;
             GameManager.invertColoursPlane.SetActive(!GameManager.invertColoursPlane.activeSelf);
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour {
         */
 
         //moving off screen --> death
-        if(transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary) {
+        if (transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary) {
             print("player has died");
             GameManager.PlayerDied();
             RespawnPlayer();
@@ -47,7 +46,7 @@ public class PlayerController : MonoBehaviour {
 
     public void ChangeGravity()
     {
-        if(isTouchingFloor && GameManager.gameStarted && !GameManager.paused)
+        if(numberOfColliders > 0 && GameManager.gameStarted && !GameManager.paused)
         {
             rigidbody.gravityScale *= -1;
             GameManager.invertColoursPlane.SetActive(!GameManager.invertColoursPlane.activeSelf);
@@ -70,7 +69,7 @@ public class PlayerController : MonoBehaviour {
     {
         if(collision.collider.tag == "JumpableFloor")
         {
-            isTouchingFloor = true;
+            numberOfColliders++;
             //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.touchingColour;
         }
     }
@@ -79,7 +78,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (collision.collider.tag == "JumpableFloor")
         {
-            isTouchingFloor = false;
+            numberOfColliders--;
             //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.normalColour;
         }
 
