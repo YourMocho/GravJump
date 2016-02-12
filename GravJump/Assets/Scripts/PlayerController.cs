@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour {
     {
         if(collision.collider.tag == "JumpableFloor")
         {
-            numberOfColliders++;
+           // numberOfColliders++;
             //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.touchingColour;
         }
     }
@@ -74,12 +74,14 @@ public class PlayerController : MonoBehaviour {
     {
         if (collision.collider.tag == "JumpableFloor")
         {
-            numberOfColliders--;
+           // numberOfColliders--;
             //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.normalColour;
         }
 
         rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
     }
+
+
 
     private void InvertAllMaterialColors()
     {

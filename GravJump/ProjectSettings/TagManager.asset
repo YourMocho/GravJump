@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - JumpableFloor
+  - PickUp
   layers:
   - Default
   - TransparentFX

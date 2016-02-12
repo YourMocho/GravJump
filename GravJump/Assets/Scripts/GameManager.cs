@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 
     void Awake()
     {
-        normalColour = GameObject.Find("GroundBlock").GetComponent<SpriteRenderer>().color;
+     //   normalColour = GameObject.Find("GroundBlock").GetComponent<SpriteRenderer>().color;
         invertColoursPlane = GameObject.Find("InvertColoursPlane");
         invertColoursPlane.SetActive(false);
         backButton = GameObject.Find("BackButton");
@@ -76,6 +76,11 @@ public class GameManager : MonoBehaviour {
         {
             ResetPlayer();
         }
+    }
+
+    void LateUpdate()
+    {
+        print(playerController.numberOfColliders);
     }
 
     public static void StartCountdown()
