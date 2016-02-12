@@ -4,14 +4,12 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
     private Rigidbody2D rigidbody;
-    private Vector3 playerSpawnPoint;
+    public Vector3 playerSpawnPoint;
     public float leftBoundary;
     private float upperBoundary;
     private float lowerBoundary;
     private SpriteRenderer renderer;
-    private LevelMover levelMover;
     public int numberOfColliders = 0;
-
 
     void Start () {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -19,11 +17,9 @@ public class PlayerController : MonoBehaviour {
 
         renderer = GetComponent<SpriteRenderer>();
 
-        levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
-
-        leftBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - renderer.bounds.size.x / 2;
-        upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + renderer.bounds.size.y / 2;
-        lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - renderer.bounds.size.y / 2;
+        leftBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - (renderer.bounds.size.x / 2) * GameManager.canvas.scaleFactor;
+        upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
+        lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
     }
 	
 	// Update is called once per frame

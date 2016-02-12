@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
     public static GameObject invertColoursPlane;
     private static Text scoreText;
     private static GameObject backButton;
+    public static Canvas canvas;
 
     private static int score = 0;
     private static int countdown;
@@ -26,7 +27,8 @@ public class GameManager : MonoBehaviour {
 
     private Vector2 gravity = new Vector2(0.0f, -9.8f);
 
-    void Start () {
+    void Awake()
+    {
         normalColour = GameObject.Find("GroundBlock").GetComponent<SpriteRenderer>().color;
         invertColoursPlane = GameObject.Find("InvertColoursPlane");
         invertColoursPlane.SetActive(false);
@@ -37,6 +39,10 @@ public class GameManager : MonoBehaviour {
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         scoreText.text = "";
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+    }
+
+    void Start() { 
         StartCountdown();
     }
 	
@@ -65,6 +71,11 @@ public class GameManager : MonoBehaviour {
         {
             scoreText.text = score.ToString();
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetPlayer();
+        }
     }
 
     public static void StartCountdown()
@@ -85,6 +96,23 @@ public class GameManager : MonoBehaviour {
             PlayerPrefs.SetInt("score", score);
         }
         ResetMapToSpawnPoint();
+        ResetPickUps();
+    }
+
+    private static void ResetPickUps()
+    {
+        GameObject[] pickUps = GameObject.FindGameObjectsWithTag("PickUp");
+        foreach(GameObject pickUp in pickUps)
+        {
+            pickUp.GetComponent<SpriteRenderer>().enabled = true;
+        }
+    }
+
+    public static void ResetPlayer()
+    {
+        float x = playerController.playerSpawnPoint.x - playerController.transform.position.x;
+        playerController.transform.position = new Vector3(playerController.playerSpawnPoint.x, playerController.transform.position.y, 0);
+        levelMover.transform.Translate(new Vector3(x, 0, 0));
     }
 
     public static void ResetMapToSpawnPoint()
