@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour {
     {
         if(collision.collider.tag == "JumpableFloor")
         {
-           // numberOfColliders++;
+           numberOfColliders++;
             //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.touchingColour;
         }
     }
@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (collision.collider.tag == "JumpableFloor")
         {
-           // numberOfColliders--;
+            numberOfColliders--;
             //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.normalColour;
         }
 

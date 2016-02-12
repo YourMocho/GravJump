@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
     private static float timer;
     public static bool gameStarted;
     public static bool paused = false;
-    public static int startSpeed = 12;
+    public static int startSpeed = 20;
     public static int maxSpeed = 25;
     public static int minSpeed = 3;
 
