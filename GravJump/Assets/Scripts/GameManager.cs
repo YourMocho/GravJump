@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
     private static float timer;
     public static bool gameStarted;
     public static bool paused = false;
-    public static int startSpeed = 20;
+    public static int startSpeed = 10;
     public static int maxSpeed = 25;
     public static int minSpeed = 3;
 
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour {
 
     void LateUpdate()
     {
-        print(playerController.numberOfColliders);
+       // print(playerController.numberOfColliders);
     }
 
     public static void StartCountdown()

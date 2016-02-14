@@ -22,8 +22,6 @@ public class LevelMover : MonoBehaviour {
 
            // levelSpawnPoint = transform.position.x - GameManager.player.transform.position.x; //point of players death
         } 
-
-
     }
 
     public void ChangeSpeed(float speed)
