@@ -10,9 +10,8 @@ GameObject:
   - 4: {fileID: 415432}
   - 212: {fileID: 21240636}
   - 61: {fileID: 6186822}
-  - 114: {fileID: 11470792}
   m_Layer: 0
-  m_Name: GroundBlock
+  m_Name: GroundBlockOLD
   m_TagString: JumpableFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,18 +43,6 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
---- !u!114 &11470792
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 181416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9d38667504306c4d8994cba7ae63b74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sizeDifference: 1
 --- !u!212 &21240636
 SpriteRenderer:
   m_ObjectHideFlags: 1

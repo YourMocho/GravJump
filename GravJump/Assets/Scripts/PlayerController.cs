@@ -21,9 +21,8 @@ public class PlayerController : MonoBehaviour {
         upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
         lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    void Update() {
         /*
 	    if((Input.GetButtonDown("Fire1") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && numberOfColliders > 0 && GameManager.gameStarted && !GameManager.paused)
         {
@@ -38,6 +37,11 @@ public class PlayerController : MonoBehaviour {
             GameManager.PlayerDied();
             RespawnPlayer();
         }
+
+    }
+
+    void FixedUpdate() { 
+       rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
     }
 
     public void ChangeGravity()
@@ -65,7 +69,7 @@ public class PlayerController : MonoBehaviour {
     {
         if(collision.collider.tag == "JumpableFloor")
         {
-           numberOfColliders++;
+           //numberOfColliders++;
             //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.touchingColour;
         }
     }
@@ -74,11 +78,9 @@ public class PlayerController : MonoBehaviour {
     {
         if (collision.collider.tag == "JumpableFloor")
         {
-            numberOfColliders--;
+            //numberOfColliders--;
             //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.normalColour;
         }
-
-        rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
     }
 
 
