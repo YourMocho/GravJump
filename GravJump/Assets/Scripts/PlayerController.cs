@@ -11,11 +11,15 @@ public class PlayerController : MonoBehaviour {
     private SpriteRenderer renderer;
     public int numberOfColliders = 0;
 
-    void Start () {
+    void Awake()
+    {
         rigidbody = GetComponent<Rigidbody2D>();
-        playerSpawnPoint = transform.position;
-
         renderer = GetComponent<SpriteRenderer>();
+    }
+
+    void Start()
+    {
+        playerSpawnPoint = transform.position;
 
         leftBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - (renderer.bounds.size.x / 2) * GameManager.canvas.scaleFactor;
         upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
@@ -44,12 +48,26 @@ public class PlayerController : MonoBehaviour {
        rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
     }
 
+    public void RemoveAllVelocity()
+    {
+        rigidbody.velocity = Vector3.zero;
+    }
+
     public void ChangeGravity()
     {
         if(numberOfColliders > 0 && GameManager.gameStarted && !GameManager.paused)
         {
             rigidbody.gravityScale *= -1;
-            GameManager.invertColoursPlane.SetActive(!GameManager.invertColoursPlane.activeSelf);
+            GameManager.InvertColours();
+        }
+    }
+
+    public void ResetGravityDirectionAndColours()
+    {
+        if (rigidbody.gravityScale < 0)
+        {
+            rigidbody.gravityScale *= -1;
+            GameManager.InvertColours();
         }
     }
 

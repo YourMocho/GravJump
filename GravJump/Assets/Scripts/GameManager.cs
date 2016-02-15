@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour {
     private static GameObject backButton;
     public static Canvas canvas;
 
+    public static GameObject level1;
+    public static GameObject level2;
+    private static GameObject currentLevel;
+
     private static int score = 0;
     private static int countdown;
     private static float timer;
@@ -29,7 +33,9 @@ public class GameManager : MonoBehaviour {
 
     void Awake()
     {
-     //   normalColour = GameObject.Find("GroundBlock").GetComponent<SpriteRenderer>().color;
+        //   normalColour = GameObject.Find("GroundBlock").GetComponent<SpriteRenderer>().color;
+
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         invertColoursPlane = GameObject.Find("InvertColoursPlane");
         invertColoursPlane.SetActive(false);
         backButton = GameObject.Find("BackButton");
@@ -39,7 +45,11 @@ public class GameManager : MonoBehaviour {
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         scoreText.text = "";
-        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        level1 = GameObject.Find("Level3");
+        level2 = GameObject.Find("Level4");
+        currentLevel = level1;
+        level2.SetActive(false);
+
     }
 
     void Start() { 
@@ -92,6 +102,8 @@ public class GameManager : MonoBehaviour {
         timer = Time.time;
         paused = false;
         levelMover.SetSpeed(startSpeed);
+        playerController.RemoveAllVelocity();
+        playerController.ResetGravityDirectionAndColours();
     }
 
     public static void PlayerDied()
@@ -102,6 +114,7 @@ public class GameManager : MonoBehaviour {
         }
         ResetMapToSpawnPoint();
         ResetPickUps();
+        playerController.ResetGravityDirectionAndColours();
     }
 
     private static void ResetPickUps()
@@ -118,11 +131,13 @@ public class GameManager : MonoBehaviour {
         float x = playerController.playerSpawnPoint.x - playerController.transform.position.x;
         playerController.transform.position = new Vector3(playerController.playerSpawnPoint.x, playerController.transform.position.y, 0);
         levelMover.transform.Translate(new Vector3(x, 0, 0));
+
+
     }
 
     public static void ResetMapToSpawnPoint()
     {
-        levelMover.transform.position = new Vector3(levelMover.levelSpawnPoint, 0, 0);
+        levelMover.transform.position = Vector3.zero;
     }
 
     private void calculateScore()
@@ -150,5 +165,29 @@ public class GameManager : MonoBehaviour {
                 backButton.SetActive(false);
             }
         }
+    }
+
+    public static void InvertColours()
+    {
+        invertColoursPlane.SetActive(!invertColoursPlane.activeSelf);
+    }
+
+    public static void NextLevel()
+    {
+        if(currentLevel.Equals(level1))
+        {
+            currentLevel = level2;
+            level1.SetActive(false);
+            level2.SetActive(true);
+        }
+        else if (currentLevel.Equals(level2))
+        {
+            currentLevel = level1;
+            level1.SetActive(true);
+            level2.SetActive(false);
+        }
+        ResetPlayer();
+        ResetMapToSpawnPoint();
+        StartCountdown();
     }
 }
