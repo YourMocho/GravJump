@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
     private Rigidbody2D rigidbody;
-    public Vector3 playerSpawnPoint;
+    public Vector3 lastCheckpoint = Vector3.zero;
     public float leftBoundary;
     private float upperBoundary;
     private float lowerBoundary;
@@ -19,8 +19,6 @@ public class PlayerController : MonoBehaviour {
 
     void Start()
     {
-        playerSpawnPoint = transform.position;
-
         leftBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - (renderer.bounds.size.x / 2) * GameManager.canvas.scaleFactor;
         upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
         lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
@@ -33,7 +31,6 @@ public class PlayerController : MonoBehaviour {
             GameManager.PlayerDied();
         }
 
-        print(numberOfColliders);
     }
 
     void FixedUpdate() { 
@@ -65,33 +62,11 @@ public class PlayerController : MonoBehaviour {
 
     public void RespawnPlayer()
     {
-        //numberOfColliders = 0;
-        // GameManager.invertColoursPlane.SetActive(false);
         ResetGravityDirectionAndColours();
         RemoveAllVelocity();
-        transform.position = playerSpawnPoint;
+        transform.position = lastCheckpoint;
         GameManager.StartCountdown();
     }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.collider.tag == "JumpableFloor")
-        {
-           //numberOfColliders++;
-            //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.touchingColour;
-        }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "JumpableFloor")
-        {
-            //numberOfColliders--;
-            //collision.collider.GetComponent<SpriteRenderer>().color = GameManager.normalColour;
-        }
-    }
-
-
 
     private void InvertAllMaterialColors()
     {

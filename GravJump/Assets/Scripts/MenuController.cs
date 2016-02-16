@@ -9,7 +9,7 @@ public class MenuController : MonoBehaviour {
 	
 	void Start () {
         highscoreText = GameObject.Find("HighscoreText").GetComponent<Text>();
-        highscoreText.text = PlayerPrefs.GetInt("score").ToString();
+        highscoreText.text = "Highscore: " + PlayerPrefs.GetInt("score").ToString();
     }
 
     public void StartGame()

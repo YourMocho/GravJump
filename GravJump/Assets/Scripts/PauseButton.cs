@@ -7,16 +7,14 @@ public class PauseButton : MonoBehaviour {
     public Sprite pauseSprite;
     public Sprite playSprite;
 
-    public void ToggleSprite() {
-        if (GameManager.gameStarted)
+    public void ToggleSprite()
+    {
+        if (GetComponent<Image>().sprite == pauseSprite)
         {
-            if (GetComponent<Image>().sprite == pauseSprite)
-            {
-                GetComponent<Image>().sprite = playSprite;
-            }
-            else {
-                GetComponent<Image>().sprite = pauseSprite;
-            }
+            GetComponent<Image>().sprite = playSprite;
+        }
+        else {
+            GetComponent<Image>().sprite = pauseSprite;
         }
 
     }

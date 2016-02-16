@@ -4,10 +4,14 @@ using System.Collections;
 public class Checkpoint : MonoBehaviour {
 
     private GameObject flag;
+    public Vector3 startingPosition;
 
-    void Awake()
+    void Start()
     {
-        flag = GameObject.Find("Flag");
+        float x = GameManager.levelMover.transform.position.x - transform.position.x;
+
+        startingPosition = new Vector3(x, transform.position.y, 0);
+        flag = transform.GetChild(1).gameObject;
         flag.SetActive(false);
     }
 
@@ -15,8 +19,8 @@ public class Checkpoint : MonoBehaviour {
     {
         if (collider.tag.Equals("Player"))
         {
-            GameManager.SetCheckpoint();
             flag.SetActive(true);
+            GameManager.SetCheckpoint(this);
         }
     }
 }

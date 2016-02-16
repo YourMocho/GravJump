@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class GameManager : MonoBehaviour {
 
     private static Text countdownText;
+    private static GameObject textBackground;
     public static LevelMover levelMover;
     public static PlayerController playerController;
     public static GameObject invertColoursPlane;
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour {
     public static Color normalColour; 
     public static Color touchingColour = new Color(67 / 255f,154 / 255f, 212 / 255f);
 
-    private Vector2 gravity = new Vector2(0.0f, -9.8f);
+    private static Vector2 gravity = new Vector2(0.0f, -9.8f);
 
     void Awake()
     {
@@ -40,17 +41,21 @@ public class GameManager : MonoBehaviour {
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        textBackground = GameObject.Find("TextBackground");
         scoreText.text = "";
     }
 
     void Start() { 
-        StartCountdown();
+        //StartCountdown();
     }
 	
 	void Update () {
         if (countdown > 0)
         {
-            countdownText.text = countdown.ToString();
+            if (!paused)
+            {
+                countdownText.text = countdown.ToString();
+            }
 
             if (Time.time - timer > 1.0f)
             {
@@ -60,10 +65,12 @@ public class GameManager : MonoBehaviour {
         }
         if (countdown == 0)
         {
-            countdownText.gameObject.SetActive(false);
-            gameStarted = true;
-            Physics2D.gravity = gravity;
+            StartGame();
             countdown = -1;
+        }
+        if(!gameStarted && paused)
+        {
+            timer += Time.deltaTime;
         }
 
         calculateScore();
@@ -79,11 +86,19 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public static void StartGame()
+    {
+        textBackground.SetActive(false);
+        countdownText.text = "";
+        gameStarted = true;
+        Physics2D.gravity = gravity;
+    }
+
     public static void StartCountdown()
     {
         gameStarted = false;
         Physics2D.gravity = Vector2.zero;
-        countdownText.gameObject.SetActive(true);
+        textBackground.SetActive(true);
         countdown = 3;
         timer = Time.time;
         paused = false;
@@ -116,8 +131,8 @@ public class GameManager : MonoBehaviour {
 
     public static void ResetPlayerForPickUp()
     {
-        float x = playerController.playerSpawnPoint.x - playerController.transform.position.x;
-        playerController.transform.position = new Vector3(playerController.playerSpawnPoint.x, playerController.transform.position.y, 0);
+        float x = playerController.lastCheckpoint.x - playerController.transform.position.x;
+        playerController.transform.position = new Vector3(playerController.lastCheckpoint.x, playerController.transform.position.y, 0);
         levelMover.transform.Translate(new Vector3(x, 0, 0));
     }
 
@@ -133,23 +148,21 @@ public class GameManager : MonoBehaviour {
 
     public static void TogglePause()
     {
-        if (gameStarted)
-        {
-            paused = !paused;
+        paused = !paused;
 
-            if (paused)
-            {
-                playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY;
-                countdownText.gameObject.SetActive(true);
-                countdownText.text = "Paused";
-                backButton.SetActive(true);
-            }
-            else
-            {
-                countdownText.gameObject.SetActive(false);
-                playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-                backButton.SetActive(false);
-            }
+        if (paused)
+        {
+            playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY;
+            countdownText.text = "Paused";
+            backButton.SetActive(true);
+            textBackground.SetActive(true);
+        }
+        else
+        {
+            playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+            countdownText.text = "";
+            backButton.SetActive(false);
+            textBackground.SetActive(false);
         }
     }
 
@@ -161,10 +174,13 @@ public class GameManager : MonoBehaviour {
     public static void NextLevel()
     {
         levelMover.levelSpawnPoint = 0;
+        playerController.lastCheckpoint = Vector3.zero;
+        PlayerDied();
     }
 
-    public static void SetCheckpoint()
+    public static void SetCheckpoint(Checkpoint checkpoint)
     {
-        levelMover.levelSpawnPoint = levelMover.transform.position.x;
+        levelMover.levelSpawnPoint = checkpoint.startingPosition.x; //levelMover.transform.position.x;
+        playerController.lastCheckpoint = new Vector3(0, checkpoint.transform.position.y, 0);
     }
 }
