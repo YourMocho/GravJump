@@ -13,10 +13,6 @@ public class GameManager : MonoBehaviour {
     private static GameObject backButton;
     public static Canvas canvas;
 
-    public static GameObject level1;
-    public static GameObject level2;
-    private static GameObject currentLevel;
-
     private static int score = 0;
     private static int countdown;
     private static float timer;
@@ -45,11 +41,6 @@ public class GameManager : MonoBehaviour {
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         scoreText.text = "";
-        level1 = GameObject.Find("Level3");
-        level2 = GameObject.Find("Level4");
-        currentLevel = level1;
-        level2.SetActive(false);
-
     }
 
     void Start() { 
@@ -84,13 +75,8 @@ public class GameManager : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            ResetPlayer();
+            ResetPlayerForPickUp();
         }
-    }
-
-    void LateUpdate()
-    {
-       // print(playerController.numberOfColliders);
     }
 
     public static void StartCountdown()
@@ -108,13 +94,15 @@ public class GameManager : MonoBehaviour {
 
     public static void PlayerDied()
     {
+        print("player has died");
+
         if (PlayerPrefs.GetInt("score") < score)
         {
             PlayerPrefs.SetInt("score", score);
         }
         ResetMapToSpawnPoint();
         ResetPickUps();
-        playerController.ResetGravityDirectionAndColours();
+        playerController.RespawnPlayer();
     }
 
     private static void ResetPickUps()
@@ -126,18 +114,16 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public static void ResetPlayer()
+    public static void ResetPlayerForPickUp()
     {
         float x = playerController.playerSpawnPoint.x - playerController.transform.position.x;
         playerController.transform.position = new Vector3(playerController.playerSpawnPoint.x, playerController.transform.position.y, 0);
         levelMover.transform.Translate(new Vector3(x, 0, 0));
-
-
     }
 
     public static void ResetMapToSpawnPoint()
     {
-        levelMover.transform.position = Vector3.zero;
+        levelMover.transform.position = new Vector3(levelMover.levelSpawnPoint, 0, 0);
     }
 
     private void calculateScore()
@@ -174,20 +160,11 @@ public class GameManager : MonoBehaviour {
 
     public static void NextLevel()
     {
-        if(currentLevel.Equals(level1))
-        {
-            currentLevel = level2;
-            level1.SetActive(false);
-            level2.SetActive(true);
-        }
-        else if (currentLevel.Equals(level2))
-        {
-            currentLevel = level1;
-            level1.SetActive(true);
-            level2.SetActive(false);
-        }
-        ResetPlayer();
-        ResetMapToSpawnPoint();
-        StartCountdown();
+        levelMover.levelSpawnPoint = 0;
+    }
+
+    public static void SetCheckpoint()
+    {
+        levelMover.levelSpawnPoint = levelMover.transform.position.x;
     }
 }

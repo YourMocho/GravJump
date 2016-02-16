@@ -26,22 +26,14 @@ public class PlayerController : MonoBehaviour {
         lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
     }
 
-    void Update() {
-        /*
-	    if((Input.GetButtonDown("Fire1") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && numberOfColliders > 0 && GameManager.gameStarted && !GameManager.paused)
-        {
-            rigidbody.gravityScale *= -1;
-            GameManager.invertColoursPlane.SetActive(!GameManager.invertColoursPlane.activeSelf);
-        }
-        */
-
+    void Update()
+    {
         //moving off screen --> death
         if (transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary) {
-            print("player has died");
             GameManager.PlayerDied();
-            RespawnPlayer();
         }
 
+        print(numberOfColliders);
     }
 
     void FixedUpdate() { 
@@ -71,16 +63,14 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void RespawnPlayer()
+    public void RespawnPlayer()
     {
-        GameManager.invertColoursPlane.SetActive(false);
-        GameManager.StartCountdown();
+        //numberOfColliders = 0;
+        // GameManager.invertColoursPlane.SetActive(false);
+        ResetGravityDirectionAndColours();
+        RemoveAllVelocity();
         transform.position = playerSpawnPoint;
-        rigidbody.velocity = Vector3.zero;
-        if (rigidbody.gravityScale < 0)
-        {
-            rigidbody.gravityScale *= -1;
-        }
+        GameManager.StartCountdown();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
