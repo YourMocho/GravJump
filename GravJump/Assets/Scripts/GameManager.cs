@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() { 
-        //StartCountdown();
+        StartCountdown();
     }
 	
 	void Update () {
