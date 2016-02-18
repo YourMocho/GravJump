@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour {
 
     private static Vector2 gravity = new Vector2(0.0f, -9.8f);
 
+    private static GameObject[] invisibleBlocks;
+
     void Awake()
     {
         //   normalColour = GameObject.Find("GroundBlock").GetComponent<SpriteRenderer>().color;
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour {
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         textBackground = GameObject.Find("TextBackground");
+        invisibleBlocks = GameObject.FindGameObjectsWithTag("InvisibleBlock");
         scoreText.text = "";
     }
 
@@ -169,6 +172,14 @@ public class GameManager : MonoBehaviour {
     public static void InvertColours()
     {
         invertColoursPlane.SetActive(!invertColoursPlane.activeSelf);
+    }
+
+    public static void FlipInvisibleBlocks()
+    {
+        foreach(GameObject invBlock in invisibleBlocks)
+        {
+            invBlock.GetComponent<InvisibleBlockController>().Flip();
+        }
     }
 
     public static void NextLevel()

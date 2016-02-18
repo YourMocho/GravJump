@@ -6,6 +6,7 @@ TagManager:
   tags:
   - JumpableFloor
   - PickUp
+  - InvisibleBlock
   layers:
   - Default
   - TransparentFX

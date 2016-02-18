@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour {
             GameManager.PlayerDied();
         }
 
+        print(numberOfColliders);
     }
 
     void FixedUpdate() { 
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour {
         {
             rigidbody.gravityScale *= -1;
             GameManager.InvertColours();
+            GameManager.FlipInvisibleBlocks();
         }
     }
 
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviour {
         {
             rigidbody.gravityScale *= -1;
             GameManager.InvertColours();
+            GameManager.FlipInvisibleBlocks();
         }
     }
 
@@ -67,22 +70,5 @@ public class PlayerController : MonoBehaviour {
         transform.position = lastCheckpoint;
         GameManager.StartCountdown();
     }
-
-    private void InvertAllMaterialColors()
-    {
-        Renderer[] renderers = GameObject.FindObjectsOfType<Renderer>();
-        foreach (Renderer render in renderers)
-        {
-            if (render.material.HasProperty("_Color"))
-            {
-                render.material.color = InvertColor(render.material.color);
-            }
-        }
-    }
-
-    private Color InvertColor(Color c) {
-         return new Color(1.0f-c.r, 1.0f-c.g, 1.0f-c.b);
-    }
-
 
 }
