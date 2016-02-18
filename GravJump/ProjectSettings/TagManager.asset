@@ -4,9 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - JumpableFloor
+  - GroundBlock
   - PickUp
   - InvisibleBlock
+  - JumpableFloor
+  - Gap
+  - JumpTrigger
   layers:
   - Default
   - TransparentFX

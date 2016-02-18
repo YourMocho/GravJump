@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour {
             GameManager.PlayerDied();
         }
 
-        print(numberOfColliders);
+       // print(numberOfColliders);
     }
 
     void FixedUpdate() { 

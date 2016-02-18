@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     private static Text scoreText;
     private static GameObject backButton;
     public static Canvas canvas;
+    public static CircleCollider2D playerJumpTrigger;
 
     private static int score = 0;
     private static int countdown;
@@ -23,17 +24,15 @@ public class GameManager : MonoBehaviour {
     public static int maxSpeed = 25;
     public static int minSpeed = 3;
 
-    public static Color normalColour; 
-    public static Color touchingColour = new Color(67 / 255f,154 / 255f, 212 / 255f);
-
     private static Vector2 gravity = new Vector2(0.0f, -9.8f);
 
     private static GameObject[] invisibleBlocks;
 
+    public static Color blockColour = new Color(212 / 255f, 125 / 255f, 67 / 255f);
+   // public static Color blockColour = new Color(43/255f, 130/ 255f,188/ 255f); //inverted
+
     void Awake()
     {
-        //   normalColour = GameObject.Find("GroundBlock").GetComponent<SpriteRenderer>().color;
-
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         invertColoursPlane = GameObject.Find("InvertColoursPlane");
         invertColoursPlane.SetActive(false);
@@ -45,6 +44,7 @@ public class GameManager : MonoBehaviour {
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         textBackground = GameObject.Find("TextBackground");
         invisibleBlocks = GameObject.FindGameObjectsWithTag("InvisibleBlock");
+        playerJumpTrigger = GameObject.Find("JumpTrigger").GetComponent<CircleCollider2D>();
         scoreText.text = "";
     }
 

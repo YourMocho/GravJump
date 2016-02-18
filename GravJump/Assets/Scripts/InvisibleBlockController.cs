@@ -5,37 +5,43 @@ public class InvisibleBlockController : MonoBehaviour {
 
     private SpriteRenderer renderer;
     private BoxCollider2D collider;
-    private BoxCollider2D trigger;
 
-    public bool invertedBlock = false;
+    public bool invertedBlock;
 
     void Awake()
     {
         renderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<BoxCollider2D>();
-        trigger = transform.GetChild(0).GetComponent<BoxCollider2D>();
     }
 
     void Start()
-    { 
-        if(invertedBlock)
+    {
+
+        if (invertedBlock)
         {
             Hide();
+        }
+        if(invertedBlock)
+        {
+            renderer.color = GameManager.blockColour;
         }
     }
 
     public void Hide()
     {
+        if (collider.IsTouching(GameManager.playerJumpTrigger))
+        {
+            GameManager.playerController.numberOfColliders--;
+        }
+
         renderer.enabled = false;
         collider.enabled = false;
-        trigger.enabled = false;
     }
 
     public void Show()
     {
         renderer.enabled = true;
         collider.enabled = true;
-        trigger.enabled = true;
     }
 
     public void Flip()
