@@ -9,6 +9,7 @@ public class GapController : MonoBehaviour {
     {
         spring = GetComponent<SpringJoint2D>();
         spring.enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -18,8 +19,18 @@ public class GapController : MonoBehaviour {
             //print("connected - " + (collider.transform.position - transform.position).magnitude);
             if (!spring.enabled)
             {
-                spring.enabled = true;
-                spring.connectedBody = collider.GetComponent<Rigidbody2D>();
+                if(collider.transform.position.y - transform.position.y > 0 && collider.GetComponent<Rigidbody2D>().gravityScale > 0) //player is above gap and gravity is down
+                {
+                    print("player is above gap and gravity is down");
+                    spring.enabled = true;
+                    spring.connectedBody = collider.GetComponent<Rigidbody2D>();
+                }
+                if (collider.transform.position.y - transform.position.y < 0 && collider.GetComponent<Rigidbody2D>().gravityScale < 0) //player is below gap and gravity is up
+                {
+                    print("player is below gap and gravity is up");
+                    spring.enabled = true;
+                    spring.connectedBody = collider.GetComponent<Rigidbody2D>();
+                }
             }
             if ((collider.transform.position - transform.position).magnitude < 0.5)
             {

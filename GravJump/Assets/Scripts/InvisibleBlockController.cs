@@ -21,10 +21,8 @@ public class InvisibleBlockController : MonoBehaviour {
         {
             Hide();
         }
-        if(invertedBlock)
-        {
-            renderer.color = GameManager.blockColour;
-        }
+
+        renderer.color = GameManager.blockColour;
     }
 
     public void Hide()

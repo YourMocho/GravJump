@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 1546482031
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c9518c4e1c4231d45b369640d3bc9d8a, type: 3}
-  m_Color: {r: 0.8313726, g: 0.4901961, b: 0.2627451, a: 1}
+  m_Color: {r: 0.8000001, g: 0.26274514, b: 0.8313726, a: 1}
   m_FlipX: 0
   m_FlipY: 0
 --- !u!1001 &100100000
@@ -107,15 +107,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.r
-      value: 0.8313726
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.g
-      value: 0.4901961
+      value: 0.26274514
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.b
-      value: 0.2627451
+      value: 0.8313726
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
