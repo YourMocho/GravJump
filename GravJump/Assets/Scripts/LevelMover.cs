@@ -7,10 +7,11 @@ public class LevelMover : MonoBehaviour {
     public float Xspeed = 5;
     private Vector2 movementVector;
     private Rigidbody2D rigidbody;
-    public float levelSpawnPoint = 0;
+    public Vector3 levelSpawnPoint;
     //public bool moving = true;
 
     void Start () {
+        levelSpawnPoint = transform.position;
         movementVector = new Vector2(Xspeed, 0);
         rigidbody = GetComponent<Rigidbody2D>();
     }

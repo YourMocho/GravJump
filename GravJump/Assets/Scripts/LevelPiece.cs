@@ -3,8 +3,14 @@ using System.Collections;
 
 public class LevelPiece : MonoBehaviour {
 
-    public bool startDirectionUp;
-    public bool endDirectionUp;
+    /*
+        1 - Top
+        2 - Both
+        3 - Bottom
+    */
+
+    public int startDirection;
+    public int endDirection;
     public Transform endPos;
 
     private GameObject checkpoint;

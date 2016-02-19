@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour {
 
     public static void ResetMapToSpawnPoint()
     {
-        levelMover.transform.position = new Vector3(levelMover.levelSpawnPoint, 0, 0);
+        levelMover.transform.position = levelMover.levelSpawnPoint;
     }
 
     private void calculateScore()
@@ -184,14 +184,14 @@ public class GameManager : MonoBehaviour {
 
     public static void NextLevel()
     {
-        levelMover.levelSpawnPoint = 0;
+        levelMover.levelSpawnPoint = new Vector3(0, levelMover.levelSpawnPoint.y, levelMover.levelSpawnPoint.z); ;
         playerController.lastCheckpoint = Vector3.zero;
         PlayerDied();
     }
 
     public static void SetCheckpoint(Checkpoint checkpoint)
     {
-        levelMover.levelSpawnPoint = checkpoint.startingPosition.x; //levelMover.transform.position.x;
+        levelMover.levelSpawnPoint = new Vector3(checkpoint.startingPosition.x,levelMover.levelSpawnPoint.y, levelMover.levelSpawnPoint.z); //levelMover.transform.position.x;
         playerController.lastCheckpoint = new Vector3(0, checkpoint.transform.position.y, 0);
     }
 }
