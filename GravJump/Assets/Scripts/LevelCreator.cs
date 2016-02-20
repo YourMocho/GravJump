@@ -1,23 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class LevelCreator : MonoBehaviour {
 
-    public LevelPiece[] levelPieces;
+    public List<LevelPiece> allPossibleLevelPieces;
+    public LevelPiece startingPiece;
 
     private List<LevelPiece> topPieces;
     private List<LevelPiece> bottomPieces;
     private List<LevelPiece> bothPieces;
 
-    private List<LevelPiece> currentLevel;
+    private List<LevelPiece> currentLevelPieces; //private plssss
     private Transform nextPieceSpawnpoint;
     private float rightBoundary;
-    private float leftBoundary;
+
+    private int checkpointCount;
+    public int piecesPerCheckpoint = 1;
+    public LevelPiece checkpointPiece;
 
     // Use this for initialization
     void Awake () {
-        currentLevel = new List<LevelPiece>();
+
+        LoadPossibleLevelPieces();
+
+        currentLevelPieces = new List<LevelPiece>();
         topPieces = new List<LevelPiece>();
         bottomPieces = new List<LevelPiece>();
         bothPieces = new List<LevelPiece>();
@@ -25,10 +33,18 @@ public class LevelCreator : MonoBehaviour {
         AssignTopAndBottomPieces();
     }
 
+    private void LoadPossibleLevelPieces()
+    {
+        LevelPiece[] p = Resources.LoadAll<LevelPiece>("Prefabs/LevelPieces/");
+        allPossibleLevelPieces = p.ToList<LevelPiece>();
+
+        startingPiece = Resources.Load<LevelPiece>("Prefabs/StartPiece");
+        print(startingPiece);
+    }   
+
     void Start()
     {
         rightBoundary = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x + 1;
-        //leftBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - 1;
 
         nextPieceSpawnpoint = transform;
 
@@ -37,7 +53,7 @@ public class LevelCreator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (currentLevel[currentLevel.Count - 1].endPos.position.x < rightBoundary)
+        if (currentLevelPieces[currentLevelPieces.Count - 1].endPos.position.x < rightBoundary)
         {
             SelectNextPiece();
         }
@@ -45,61 +61,83 @@ public class LevelCreator : MonoBehaviour {
 
     private void SelectNextPiece()
     {
-        print("new piece");
-
-        int random;
+        float random;
         GameObject tmpPiece = null;
-        if (currentLevel.Count > 0)
+
+        if (currentLevelPieces.Count > 0)
         {
-            if (currentLevel[currentLevel.Count - 1].endDirection == 1)
+
+            if (currentLevelPieces[currentLevelPieces.Count - 1].endDirection == 1)
             {
-                float rand = Random.Range(0,topPieces.Count + bothPieces.Count);
-                if (rand < topPieces.Count)
+
+                print("last piece ended at the TOP");
+
+                random = Random.Range(0,topPieces.Count + bothPieces.Count);
+                if (random < topPieces.Count)
                 {
-                    random = (int)Random.Range(0, topPieces.Count);
-                    tmpPiece = Instantiate(topPieces[random].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+                    tmpPiece = CreateNewLevelPieceFromList(topPieces);
                 } else
                 {
-                    //pick a both piece
+                    tmpPiece = CreateNewLevelPieceFromList(bothPieces);
                 }
             }
-            if (currentLevel[currentLevel.Count - 1].endDirection == 2)
+            if (currentLevelPieces[currentLevelPieces.Count - 1].endDirection == 2)
             {
-                tmpPiece = PickAnyPiece();
+                print("last piece ended at both sides");
+
+                tmpPiece = CreateNewLevelPieceFromList(allPossibleLevelPieces);
             }
-            if (currentLevel[currentLevel.Count - 1].endDirection == 3)
+            if (currentLevelPieces[currentLevelPieces.Count - 1].endDirection == 3)
             {
 
-                float rand = Random.Range(0, bottomPieces.Count + bothPieces.Count);
-                if (rand < bottomPieces.Count)
+                print("last piece ended at the BOTTOM");
+
+                random = Random.Range(0, bottomPieces.Count + bothPieces.Count);
+                if (random < bottomPieces.Count)
                 {
-                    random = (int)Random.Range(0, bottomPieces.Count);
-                    tmpPiece = Instantiate(bottomPieces[random].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+                    tmpPiece = CreateNewLevelPieceFromList(bottomPieces);
                 }
                 else
                 {
-                    //pick a both piece
+                    tmpPiece = CreateNewLevelPieceFromList(bothPieces);
                 }
             }
         } else
         {
-            tmpPiece = PickAnyPiece();
+            print("first piece");
+
+            tmpPiece = Instantiate(startingPiece.gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
         }
 
-        currentLevel.Add(tmpPiece.GetComponent<LevelPiece>());
-        currentLevel[currentLevel.Count - 1].gameObject.SetActive(true);
-        currentLevel[currentLevel.Count - 1].transform.parent = transform;
-        nextPieceSpawnpoint = currentLevel[currentLevel.Count - 1].endPos;
+        tmpPiece.SetActive(true);
+        tmpPiece.transform.parent = transform;
+        nextPieceSpawnpoint = tmpPiece.GetComponent<LevelPiece>().endPos;
+
+        checkpointCount++;
+
+        if (checkpointCount == piecesPerCheckpoint) 
+        {
+            tmpPiece.GetComponent<LevelPiece>().MakeCheckpoint();
+            checkpointCount = 0;
+        }
+
+        currentLevelPieces.Add(tmpPiece.GetComponent<LevelPiece>());
+    }
+
+    private GameObject CreateNewLevelPieceFromList(List<LevelPiece> list)
+    {
+        int rand = (int)Random.Range(0, list.Count);
+        return Instantiate(list[rand].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
     }
 
     private GameObject PickAnyPiece()
     {
-        return Instantiate(levelPieces[(int)Random.Range(0, levelPieces.Length)].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+        return Instantiate(allPossibleLevelPieces[(int)Random.Range(0, allPossibleLevelPieces.Count)].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
     }
 
     public void AssignTopAndBottomPieces()
     {
-        foreach(LevelPiece piece in levelPieces)
+        foreach(LevelPiece piece in allPossibleLevelPieces)
         {
             if(piece.startDirection == 1)
             {
@@ -115,6 +153,24 @@ public class LevelCreator : MonoBehaviour {
             }
         }
 
+    }
+
+    public void RemovePiecesUntilLastCheckpoint()
+    {
+        int removeIndex = 0;
+        for (int i = 0; i < currentLevelPieces.Count; i++)
+        {
+            if (currentLevelPieces[i].Equals(checkpointPiece))
+            {
+                removeIndex = i - 1;
+                break;
+            }
+        }
+
+        for (int i = 0; i < removeIndex; i++)
+        {
+            currentLevelPieces.RemoveAt(0);
+        }
     }
 
 }

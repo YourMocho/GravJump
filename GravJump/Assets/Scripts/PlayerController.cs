@@ -3,12 +3,12 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-    private Rigidbody2D rigidbody;
-    public Vector3 lastCheckpoint = Vector3.zero;
+    private new Rigidbody2D rigidbody;
+    public Vector3 spawnPoint = Vector3.zero;
     public float leftBoundary;
     private float upperBoundary;
     private float lowerBoundary;
-    private SpriteRenderer renderer;
+    private new SpriteRenderer renderer;
     public int numberOfColliders = 0;
 
     void Awake()
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour {
 
     public void ResetGravityDirectionAndColours()
     {
-        if (rigidbody.gravityScale < 0)
+        if ((GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale > 0) || (!GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale < 0)) //set grav and colour invert depending on checkpoint orientation
         {
             rigidbody.gravityScale *= -1;
             GameManager.InvertColours();
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour {
     {
         ResetGravityDirectionAndColours();
         RemoveAllVelocity();
-        transform.position = lastCheckpoint;
+        transform.position = spawnPoint;
         GameManager.StartCountdown();
     }
 

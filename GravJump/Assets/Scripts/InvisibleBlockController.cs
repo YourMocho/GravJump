@@ -3,8 +3,8 @@ using System.Collections;
 
 public class InvisibleBlockController : MonoBehaviour {
 
-    private SpriteRenderer renderer;
-    private BoxCollider2D collider;
+    private new SpriteRenderer renderer;
+    private new BoxCollider2D collider;
 
     public bool invertedBlock;
 

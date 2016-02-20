@@ -8,10 +8,7 @@ public class UIButtonClickable : MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick(PointerEventData eventData)
     {
-       // print("BUTTON");
-
         Canvas canvas = GetComponentInParent<Canvas>();
-        RectTransform canvasTransform = GetComponentInParent<RectTransform>();
         RectTransform thisTransform = GetComponent<RectTransform>();
 
         float x = 0;

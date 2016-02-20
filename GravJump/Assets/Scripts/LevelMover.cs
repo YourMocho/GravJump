@@ -6,7 +6,7 @@ public class LevelMover : MonoBehaviour {
 
     public float Xspeed = 5;
     private Vector2 movementVector;
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
     public Vector3 levelSpawnPoint;
     //public bool moving = true;
 

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     public static GameObject invertColoursPlane;
     private static Text scoreText;
     private static GameObject backButton;
+    private static LevelCreator levelCreator;
     public static Canvas canvas;
     public static CircleCollider2D playerJumpTrigger;
 
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour {
     public static int startSpeed = 10;
     public static int maxSpeed = 25;
     public static int minSpeed = 3;
+
+    public static Checkpoint lastCheckpoint;
 
     private static Vector2 gravity = new Vector2(0.0f, -9.8f);
 
@@ -45,6 +48,8 @@ public class GameManager : MonoBehaviour {
         textBackground = GameObject.Find("TextBackground");
         invisibleBlocks = GameObject.FindGameObjectsWithTag("InvisibleBlock");
         playerJumpTrigger = GameObject.Find("JumpTrigger").GetComponent<CircleCollider2D>();
+        levelCreator = GameObject.Find("LevelAnchor").GetComponent<LevelCreator>();
+        lastCheckpoint = GameObject.Find("PlayerInitialCheckpoint").GetComponent<Checkpoint>();
         scoreText.text = "";
     }
 
@@ -105,9 +110,6 @@ public class GameManager : MonoBehaviour {
         countdown = 3;
         timer = Time.time;
         paused = false;
-        levelMover.SetSpeed(startSpeed);
-        playerController.RemoveAllVelocity();
-        playerController.ResetGravityDirectionAndColours();
     }
 
     public static void PlayerDied()
@@ -134,8 +136,8 @@ public class GameManager : MonoBehaviour {
 
     public static void ResetPlayerForPickUp()
     {
-        float x = playerController.lastCheckpoint.x - playerController.transform.position.x;
-        playerController.transform.position = new Vector3(playerController.lastCheckpoint.x, playerController.transform.position.y, 0);
+        float x = playerController.spawnPoint.x - playerController.transform.position.x;
+        playerController.transform.position = new Vector3(playerController.spawnPoint.x, playerController.transform.position.y, 0);
         levelMover.transform.Translate(new Vector3(x, 0, 0));
     }
 
@@ -185,13 +187,16 @@ public class GameManager : MonoBehaviour {
     public static void NextLevel()
     {
         levelMover.levelSpawnPoint = new Vector3(0, levelMover.levelSpawnPoint.y, levelMover.levelSpawnPoint.z); ;
-        playerController.lastCheckpoint = Vector3.zero;
+        playerController.spawnPoint = Vector3.zero;
         PlayerDied();
     }
 
     public static void SetCheckpoint(Checkpoint checkpoint)
     {
+        lastCheckpoint = checkpoint;
         levelMover.levelSpawnPoint = new Vector3(checkpoint.startingPosition.x,levelMover.levelSpawnPoint.y, levelMover.levelSpawnPoint.z); //levelMover.transform.position.x;
-        playerController.lastCheckpoint = new Vector3(0, checkpoint.transform.position.y, 0);
+        playerController.spawnPoint = new Vector3(0, checkpoint.transform.position.y, 0);
+        levelCreator.checkpointPiece = checkpoint.transform.parent.GetComponent<LevelPiece>();
+        levelCreator.RemovePiecesUntilLastCheckpoint();
     }
 }
