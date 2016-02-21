@@ -10,6 +10,7 @@ TagManager:
   - JumpableFloor
   - Gap
   - JumpTrigger
+  - StartPiece
   layers:
   - Default
   - TransparentFX

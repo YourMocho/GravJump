@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.UI;
 
 public class LevelCreator : MonoBehaviour {
 
@@ -20,6 +21,9 @@ public class LevelCreator : MonoBehaviour {
     public int piecesPerCheckpoint = 1;
     public LevelPiece checkpointPiece;
 
+
+    public List<int> deathsPerCheckPoint;
+
     // Use this for initialization
     void Awake () {
 
@@ -29,6 +33,8 @@ public class LevelCreator : MonoBehaviour {
         topPieces = new List<LevelPiece>();
         bottomPieces = new List<LevelPiece>();
         bothPieces = new List<LevelPiece>();
+
+        deathsPerCheckPoint = new List<int>();
 
         AssignTopAndBottomPieces();
     }
@@ -55,7 +61,18 @@ public class LevelCreator : MonoBehaviour {
 	void Update () {
         if (currentLevelPieces[currentLevelPieces.Count - 1].endPos.position.x < rightBoundary)
         {
-            SelectNextPiece();
+            SelectNextPieceWithFlipping();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P) || (Input.touchCount > 3))
+        {
+            string s = "Checkpoint Deaths:  ";
+            foreach (int i in deathsPerCheckPoint)
+            {
+                print(i);
+                s += i + ", ";
+            }
+            GameObject.Find("DebugText").GetComponent<Text>().text = s;
         }
     }
 
@@ -117,6 +134,64 @@ public class LevelCreator : MonoBehaviour {
 
         if (checkpointCount == piecesPerCheckpoint) 
         {
+           
+                tmpPiece.GetComponent<LevelPiece>().MakeCheckpoint();
+
+            checkpointCount = 0;
+        }
+
+        currentLevelPieces.Add(tmpPiece.GetComponent<LevelPiece>());
+    }
+
+    private void SelectNextPieceWithFlipping()
+    {
+        int randomIndex;
+        GameObject tmpPiece = null;
+
+        if (currentLevelPieces.Count > 0)
+        {
+            randomIndex = (int)Random.Range(0, allPossibleLevelPieces.Count);
+
+            tmpPiece = Instantiate(allPossibleLevelPieces[randomIndex].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+
+            if (allPossibleLevelPieces[randomIndex].startDirection == currentLevelPieces[currentLevelPieces.Count - 1].endDirection) //both pieces are 1s or 2s or 3s
+            {
+     
+            }
+            if (allPossibleLevelPieces[randomIndex].startDirection == 2 || currentLevelPieces[currentLevelPieces.Count - 1].endDirection == 2) //new piece or old piece is a 2 so new one can flip either way
+            {
+                //flip 50% of time
+                float rand = Random.value;
+                if(rand < 0.5)
+                {
+                    tmpPiece.GetComponent<LevelPiece>().FlipHorizontal();
+                    print("flipped new piece");
+                }
+            }
+            if (Mathf.Abs(allPossibleLevelPieces[randomIndex].startDirection - currentLevelPieces[currentLevelPieces.Count - 1].endDirection) == 2) //new piece is opposite of old one so have to flip
+            {
+                //flip piece
+                tmpPiece.GetComponent<LevelPiece>().FlipHorizontal();
+                print("flipped new piece");
+            }
+
+
+
+        } else
+        {
+            print("first piece");
+
+            tmpPiece = Instantiate(startingPiece.gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+        }
+
+        tmpPiece.SetActive(true);
+        tmpPiece.transform.parent = transform;
+        nextPieceSpawnpoint = tmpPiece.GetComponent<LevelPiece>().endPos;
+
+        checkpointCount++;
+
+        if (checkpointCount == piecesPerCheckpoint)
+        {
             tmpPiece.GetComponent<LevelPiece>().MakeCheckpoint();
             checkpointCount = 0;
         }
@@ -155,8 +230,21 @@ public class LevelCreator : MonoBehaviour {
 
     }
 
+    bool first = true;
+
+    public void RecordDeathsAtCheckpoint()
+    {
+        print("recorded");
+        if (!first)
+        {
+            deathsPerCheckPoint.Add(checkpointPiece.checkpoint.respawnNumber);
+        }
+        first = false;
+    }
+
     public void RemovePiecesUntilLastCheckpoint()
     {
+        print("removing pieces");
         int removeIndex = 0;
         for (int i = 0; i < currentLevelPieces.Count; i++)
         {
@@ -166,9 +254,10 @@ public class LevelCreator : MonoBehaviour {
                 break;
             }
         }
-
+        print("removing" + removeIndex + "pieces");
         for (int i = 0; i < removeIndex; i++)
         {
+            Destroy(currentLevelPieces[0].gameObject);
             currentLevelPieces.RemoveAt(0);
         }
     }

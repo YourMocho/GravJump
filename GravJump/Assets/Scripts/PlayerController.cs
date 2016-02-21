@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 
@@ -11,8 +12,18 @@ public class PlayerController : MonoBehaviour {
     private new SpriteRenderer renderer;
     public int numberOfColliders = 0;
 
+    public bool useTrail = false;
+    public GameObject trailObject;
+    private List<GameObject> trail;
+    public bool useDeathParticles = false;
+    public GameObject deathParticles;
+
     void Awake()
     {
+        if (useTrail)
+        {
+            trail = new List<GameObject>();
+        }
         rigidbody = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
     }
@@ -31,7 +42,28 @@ public class PlayerController : MonoBehaviour {
             GameManager.PlayerDied();
         }
 
-       // print(numberOfColliders);
+        // print(numberOfColliders);
+        if (useTrail)
+        {
+            CreateTrail();
+        }
+    }
+
+    private void CreateTrail()
+    {
+        GameObject tmp = Instantiate(trailObject, transform.position, Quaternion.identity) as GameObject;
+        tmp.transform.parent = GameManager.levelMover.transform;
+        trail.Add(tmp);
+        if(trail.Count > 10)
+        {
+            Destroy(trail[0]);
+            trail.RemoveAt(0);
+        }
+        foreach(GameObject t in trail)
+        {
+            t.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, t.GetComponent<SpriteRenderer>().color.a - 0.1f);
+            t.transform.localScale = new Vector3(t.transform.localScale.x - 0.02f, t.transform.localScale.y - 0.02f, t.transform.localScale.z - 0.02f);
+        }
     }
 
     void FixedUpdate() { 
@@ -55,11 +87,22 @@ public class PlayerController : MonoBehaviour {
 
     public void ResetGravityDirectionAndColours()
     {
-        if ((GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale > 0) || (!GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale < 0)) //set grav and colour invert depending on checkpoint orientation
+        if (GameManager.lastCheckpoint != null)
         {
-            rigidbody.gravityScale *= -1;
-            GameManager.InvertColours();
-            GameManager.FlipInvisibleBlocks();
+            if ((GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale > 0) || (!GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale < 0)) //set grav and colour invert depending on checkpoint orientation
+            {
+                rigidbody.gravityScale *= -1;
+                GameManager.InvertColours();
+                GameManager.FlipInvisibleBlocks();
+            }
+        } else
+        {
+            if(rigidbody.gravityScale < 0)
+            {
+                rigidbody.gravityScale *= -1;
+                GameManager.InvertColours();
+                GameManager.FlipInvisibleBlocks();
+            }
         }
     }
 
@@ -68,7 +111,13 @@ public class PlayerController : MonoBehaviour {
         ResetGravityDirectionAndColours();
         RemoveAllVelocity();
         transform.position = spawnPoint;
-        GameManager.StartCountdown();
+    }
+
+    //////////////
+
+    public void DisplayDeathParticles()
+    {
+        Instantiate(deathParticles, transform.position, deathParticles.transform.rotation);
     }
 
 }

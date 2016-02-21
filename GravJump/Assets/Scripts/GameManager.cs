@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     public static GameObject invertColoursPlane;
     private static Text scoreText;
     private static GameObject backButton;
-    private static LevelCreator levelCreator;
+    public static LevelCreator levelCreator;
     public static Canvas canvas;
     public static CircleCollider2D playerJumpTrigger;
 
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
     public static int maxSpeed = 25;
     public static int minSpeed = 3;
 
-    public static Checkpoint lastCheckpoint;
+    public static Checkpoint lastCheckpoint = null;
 
     private static Vector2 gravity = new Vector2(0.0f, -9.8f);
 
@@ -49,7 +49,6 @@ public class GameManager : MonoBehaviour {
         invisibleBlocks = GameObject.FindGameObjectsWithTag("InvisibleBlock");
         playerJumpTrigger = GameObject.Find("JumpTrigger").GetComponent<CircleCollider2D>();
         levelCreator = GameObject.Find("LevelAnchor").GetComponent<LevelCreator>();
-        lastCheckpoint = GameObject.Find("PlayerInitialCheckpoint").GetComponent<Checkpoint>();
         scoreText.text = "";
     }
 
@@ -120,9 +119,21 @@ public class GameManager : MonoBehaviour {
         {
             PlayerPrefs.SetInt("score", score);
         }
+
+        if (playerController.useDeathParticles)
+        {
+            playerController.DisplayDeathParticles();
+        }
+
+        playerController.RespawnPlayer();
+        if(lastCheckpoint != null)
+        { 
+            lastCheckpoint.UpdateRespawnNumber();
+        }
+
+        StartCountdown();
         ResetMapToSpawnPoint();
         ResetPickUps();
-        playerController.RespawnPlayer();
     }
 
     private static void ResetPickUps()
@@ -196,6 +207,7 @@ public class GameManager : MonoBehaviour {
         lastCheckpoint = checkpoint;
         levelMover.levelSpawnPoint = new Vector3(checkpoint.startingPosition.x,levelMover.levelSpawnPoint.y, levelMover.levelSpawnPoint.z); //levelMover.transform.position.x;
         playerController.spawnPoint = new Vector3(0, checkpoint.transform.position.y, 0);
+        levelCreator.RecordDeathsAtCheckpoint();
         levelCreator.checkpointPiece = checkpoint.transform.parent.GetComponent<LevelPiece>();
         levelCreator.RemovePiecesUntilLastCheckpoint();
     }
