@@ -54,7 +54,7 @@ public class LevelCreator : MonoBehaviour {
 
         nextPieceSpawnpoint = transform;
 
-        SelectNextPiece();
+        SelectNextPieceWithFlipping();
     }
 	
 	// Update is called once per frame

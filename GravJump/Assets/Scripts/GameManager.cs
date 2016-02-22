@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
     public static LevelMover levelMover;
     public static PlayerController playerController;
     public static GameObject invertColoursPlane;
+    public static InvertSpawner invertSpawner;
     private static Text scoreText;
     private static GameObject backButton;
     public static LevelCreator levelCreator;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         invertColoursPlane = GameObject.Find("InvertColoursPlane");
         invertColoursPlane.SetActive(false);
+        invertSpawner = GameObject.Find("InvertSpawner").GetComponent<InvertSpawner>();
         backButton = GameObject.Find("BackButton");
         backButton.SetActive(false);
         countdownText = GameObject.Find("CountdownText").GetComponent<Text>();
@@ -184,7 +186,10 @@ public class GameManager : MonoBehaviour {
 
     public static void InvertColours()
     {
-        invertColoursPlane.SetActive(!invertColoursPlane.activeSelf);
+        //invertColoursPlane.SetActive(!invertColoursPlane.activeSelf);
+
+        //invertColoursCircle.Reverse();
+        invertSpawner.Invert();
     }
 
     public static void FlipInvisibleBlocks()
