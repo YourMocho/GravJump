@@ -26,6 +26,11 @@ public class LevelPiece : MonoBehaviour {
         }
     }
 
+    void Start()
+    {
+        //FlipHorizontal();
+    }
+
     public void MakeCheckpoint()
     {
         if (!tag.Equals("StartPiece"))
@@ -59,6 +64,11 @@ public class LevelPiece : MonoBehaviour {
             endDirection = 1;
         }
 
+        GameObject[] invisibleBlocks = GameObject.FindGameObjectsWithTag("InvisibleBlock");
 
+        foreach(GameObject block in invisibleBlocks)
+        {
+            block.GetComponent<InvisibleBlockController>().Flip();
+        }
     }
 }

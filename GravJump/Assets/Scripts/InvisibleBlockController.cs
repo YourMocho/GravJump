@@ -12,10 +12,6 @@ public class InvisibleBlockController : MonoBehaviour {
     {
         renderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<BoxCollider2D>();
-    }
-
-    void Start()
-    {
 
         if (invertedBlock)
         {
