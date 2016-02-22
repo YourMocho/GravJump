@@ -15,8 +15,11 @@ public class PlayerController : MonoBehaviour {
     public bool useTrail = false;
     public GameObject trailObject;
     private List<GameObject> trail;
-    public bool useDeathParticles = false;
-    public GameObject deathParticles;
+
+    private GameObject deathParticles;
+    private bool isAlive = true;
+    private bool displayingDeathParticles = false;
+    private float timer = 0;
 
     void Awake()
     {
@@ -26,20 +29,42 @@ public class PlayerController : MonoBehaviour {
         }
         rigidbody = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
+        deathParticles = GameObject.Find("DeathParticles");
+        ShowDeathParticles(false);
     }
 
     void Start()
     {
-        leftBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - (renderer.bounds.size.x / 2) * GameManager.canvas.scaleFactor;
-        upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
-        lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - (renderer.bounds.size.y / 2) * GameManager.canvas.scaleFactor;
+        leftBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - (renderer.bounds.size.x / 2f) * GameManager.canvas.scaleFactor;
+        upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + (renderer.bounds.size.y / 2f) * GameManager.canvas.scaleFactor;
+        lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - (renderer.bounds.size.y / 2f) * GameManager.canvas.scaleFactor;
     }
 
     void Update()
     {
         //moving off screen --> death
-        if (transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary) {
-            GameManager.PlayerDied();
+        if (transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary && isAlive) {
+            //GameManager.PlayerDied();
+            isAlive = false;
+            GameManager.gameStarted = false;
+            rigidbody.constraints = RigidbodyConstraints2D.FreezePositionY;
+            renderer.enabled = false;
+        }
+        if(!isAlive && !displayingDeathParticles)
+        {
+            ShowDeathParticles(true);
+            timer = Time.time + 0.5f;
+        }
+        if(displayingDeathParticles)
+        {
+            if(timer - Time.time < 0)
+            {
+                ShowDeathParticles(false);
+                GameManager.PlayerDied();
+                isAlive = true;
+                rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+                renderer.enabled = true;
+            }
         }
 
         // print(numberOfColliders);
@@ -117,9 +142,24 @@ public class PlayerController : MonoBehaviour {
 
     //////////////
 
-    public void DisplayDeathParticles()
+    public void ShowDeathParticles(bool state)
     {
-        Instantiate(deathParticles, transform.position, deathParticles.transform.rotation);
+        deathParticles.SetActive(state);
+        if (transform.position.x < leftBoundary) 
+        {
+            //0,90,0
+            deathParticles.transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+        if(transform.position.y > upperBoundary) {
+            //90, 0,0
+            deathParticles.transform.rotation = Quaternion.Euler(90, 0, 0);
+        }
+        if (transform.position.y < lowerBoundary)
+        {
+            //-90,0,0
+            deathParticles.transform.rotation = Quaternion.Euler(-90, 0, 0);
+        }
+        displayingDeathParticles = state;
     }
 
 }

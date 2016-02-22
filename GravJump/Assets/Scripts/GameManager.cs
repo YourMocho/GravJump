@@ -123,20 +123,16 @@ public class GameManager : MonoBehaviour {
             PlayerPrefs.SetInt("score", score);
         }
 
-        if (playerController.useDeathParticles)
+        if (lastCheckpoint != null)
         {
-            playerController.DisplayDeathParticles();
-        }
-
-        playerController.RespawnPlayer();
-        if(lastCheckpoint != null)
-        { 
             lastCheckpoint.UpdateRespawnNumber();
         }
 
+        playerController.RespawnPlayer();
         StartCountdown();
         ResetMapToSpawnPoint();
         ResetPickUps();
+
     }
 
     private static void ResetPickUps()
