@@ -13,7 +13,7 @@ public class LevelCreator : MonoBehaviour {
     private List<LevelPiece> bottomPieces;
     private List<LevelPiece> bothPieces;
 
-    private List<LevelPiece> currentLevelPieces; //private plssss
+    public List<LevelPiece> currentLevelPieces; //private plssss
     private Transform nextPieceSpawnpoint;
     private float rightBoundary;
 

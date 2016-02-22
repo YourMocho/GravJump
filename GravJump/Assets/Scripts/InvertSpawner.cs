@@ -24,12 +24,10 @@ public class InvertSpawner : MonoBehaviour {
 
     private void DeletePairs()
     {
-        print("Deleting");
         for(int i = 1; i < inverters.Count; i++)
         {
             if(inverters[i].expanding == false && inverters[i-1].expanding == false)
             {
-                print("found pair");
                 Destroy(inverters[i].gameObject);
                 Destroy(inverters[i-1].gameObject);
                 inverters.RemoveAt(i);

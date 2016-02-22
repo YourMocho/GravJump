@@ -958,6 +958,9 @@ MonoBehaviour:
   startDirection: 3
   endDirection: 3
   endPos: {fileID: 0}
+  upsideDown: 0
+  checkpoint: {fileID: 0}
+  invisibleBlocks: []
 --- !u!114 &11441944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -992,6 +995,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingPosition: {x: 0, y: 0, z: 0}
+  upsideDown: 0
+  respawnNumber: 0
 --- !u!212 &21202382
 SpriteRenderer:
   m_ObjectHideFlags: 1

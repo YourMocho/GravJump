@@ -73,14 +73,12 @@ public class InvertController : MonoBehaviour {
 
     public void Expand()
     {
-        print("expand pls");
         targetScale = maxScale;
         expanding = true;
     }
 
     public void Shrink()
     {
-        print("shrink pls");
         targetScale = Vector3.zero;
         shrinking = true;
     }

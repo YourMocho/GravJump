@@ -776,6 +776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 0
+  visible: 1
 --- !u!114 &11416210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -788,6 +789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 0
+  visible: 1
 --- !u!114 &11417698
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -800,6 +802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 0
+  visible: 1
 --- !u!114 &11419026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -812,6 +815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 0
+  visible: 1
 --- !u!114 &11430702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -823,11 +827,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1c5ed30021be04090b4f96e25e5082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDirection: 1
+  startDirection: 3
   endDirection: 3
   endPos: {fileID: 0}
   upsideDown: 0
   checkpoint: {fileID: 0}
+  invisibleBlocks: []
 --- !u!114 &11434630
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -840,6 +845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 1
+  visible: 1
 --- !u!114 &11442214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -852,6 +858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 0
+  visible: 1
 --- !u!114 &11461212
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -864,6 +871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 1
+  visible: 1
 --- !u!114 &11467778
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -887,6 +895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 1
+  visible: 1
 --- !u!114 &11476372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -899,6 +908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 0
+  visible: 1
 --- !u!114 &11486226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -911,6 +921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 1
+  visible: 1
 --- !u!114 &11494580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -923,6 +934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertedBlock: 1
+  visible: 1
 --- !u!212 &21200640
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -1421,7 +1433,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: startDirection
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 182518}

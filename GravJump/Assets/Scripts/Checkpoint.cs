@@ -10,7 +10,7 @@ public class Checkpoint : MonoBehaviour {
     public bool upsideDown;
 
     private TextMesh respawnText;
-    public int respawnNumber = 0; //make private
+    public int respawnNumber; //make private
 
     void Awake()
     {
@@ -19,6 +19,8 @@ public class Checkpoint : MonoBehaviour {
         pole = transform.GetChild(0).gameObject;
         flag = transform.GetChild(1).gameObject;
         flag.SetActive(false);
+
+        respawnNumber = 5;
     }
 
     void Start()
@@ -41,8 +43,12 @@ public class Checkpoint : MonoBehaviour {
 
     public void UpdateRespawnNumber()
     {
-        respawnNumber++;
+        respawnNumber--;
         respawnText.text = respawnNumber.ToString();
+        if(respawnNumber < 0)
+        {
+            GameManager.GameOver();
+        }
     }
 
     public void CreateFlagText()
@@ -58,7 +64,7 @@ public class Checkpoint : MonoBehaviour {
         respawnText.color = Color.black;
         respawnText.anchor = TextAnchor.MiddleLeft;
         respawnText.characterSize = 0.05f;
-        respawnText.text = "0";
+        respawnText.text = respawnNumber.ToString();
     }
 
     public void CheckUpsideDown()

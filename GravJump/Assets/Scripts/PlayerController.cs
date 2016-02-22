@@ -79,10 +79,16 @@ public class PlayerController : MonoBehaviour {
     {
         if(numberOfColliders > 0 && GameManager.gameStarted && !GameManager.paused)
         {
-            rigidbody.gravityScale *= -1;
-            GameManager.InvertColours();
-            GameManager.FlipInvisibleBlocks();
+            ActuallyChangeGravity();
         }
+    }
+
+    private void ActuallyChangeGravity()
+    {
+        rigidbody.gravityScale *= -1;
+        GameManager.InvertColours();
+        GameManager.FlipInvisibleBlocks();
+        GameManager.gravityIsDown = !GameManager.gravityIsDown;
     }
 
     public void ResetGravityDirectionAndColours()
@@ -91,17 +97,13 @@ public class PlayerController : MonoBehaviour {
         {
             if ((GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale > 0) || (!GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale < 0)) //set grav and colour invert depending on checkpoint orientation
             {
-                rigidbody.gravityScale *= -1;
-                GameManager.InvertColours();
-                GameManager.FlipInvisibleBlocks();
+                ActuallyChangeGravity();
             }
         } else
         {
             if(rigidbody.gravityScale < 0)
             {
-                rigidbody.gravityScale *= -1;
-                GameManager.InvertColours();
-                GameManager.FlipInvisibleBlocks();
+                ActuallyChangeGravity();
             }
         }
     }

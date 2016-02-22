@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -28,9 +30,9 @@ public class GameManager : MonoBehaviour {
 
     public static Checkpoint lastCheckpoint = null;
 
-    private static Vector2 gravity = new Vector2(0.0f, -9.8f);
+    public static bool gravityIsDown = true;
 
-    private static GameObject[] invisibleBlocks;
+    private static Vector2 gravity = new Vector2(0.0f, -9.8f);
 
     public static Color blockColour = new Color(212 / 255f, 125 / 255f, 67 / 255f);
    // public static Color blockColour = new Color(43/255f, 130/ 255f,188/ 255f); //inverted
@@ -48,7 +50,6 @@ public class GameManager : MonoBehaviour {
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         textBackground = GameObject.Find("TextBackground");
-        invisibleBlocks = GameObject.FindGameObjectsWithTag("InvisibleBlock");
         playerJumpTrigger = GameObject.Find("JumpTrigger").GetComponent<CircleCollider2D>();
         levelCreator = GameObject.Find("LevelAnchor").GetComponent<LevelCreator>();
         scoreText.text = "";
@@ -194,9 +195,9 @@ public class GameManager : MonoBehaviour {
 
     public static void FlipInvisibleBlocks()
     {
-        foreach(GameObject invBlock in invisibleBlocks)
+        foreach(LevelPiece levelPiece in levelCreator.currentLevelPieces)
         {
-            invBlock.GetComponent<InvisibleBlockController>().Flip();
+            levelPiece.FlipInvisibleBlocks();
         }
     }
 
@@ -215,5 +216,10 @@ public class GameManager : MonoBehaviour {
         levelCreator.RecordDeathsAtCheckpoint();
         levelCreator.checkpointPiece = checkpoint.transform.parent.GetComponent<LevelPiece>();
         levelCreator.RemovePiecesUntilLastCheckpoint();
+    }
+
+    public static void GameOver()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }

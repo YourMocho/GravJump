@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 
 public class LevelPiece : MonoBehaviour {
 
@@ -17,18 +19,26 @@ public class LevelPiece : MonoBehaviour {
 
     public Checkpoint checkpoint; //make private
 
-	void Awake () {
+    public List<InvisibleBlockController> invisibleBlocks;
+
+    void Awake () {
         endPos = transform.FindChild("EndPos");
         if (!tag.Equals("StartPiece"))
         {
             checkpoint = transform.FindChild("Checkpoint").GetComponent<Checkpoint>();
             checkpoint.SetVisibility(false);
         }
+
+        invisibleBlocks = new List<InvisibleBlockController>();
+
+        FindInvisibleBlocks();
+
     }
 
     void Start()
     {
         //FlipHorizontal();
+        SetupInvisibleBlocks();
     }
 
     public void MakeCheckpoint()
@@ -64,11 +74,34 @@ public class LevelPiece : MonoBehaviour {
             endDirection = 1;
         }
 
-        GameObject[] invisibleBlocks = GameObject.FindGameObjectsWithTag("InvisibleBlock");
-
-        foreach(GameObject block in invisibleBlocks)
+        foreach(InvisibleBlockController invBlock in invisibleBlocks)
         {
-            block.GetComponent<InvisibleBlockController>().Flip();
+            //print("flipping blocks");
+           invBlock.Flip();
         }
     }
+
+    private void FindInvisibleBlocks()
+    {
+        InvisibleBlockController[] invBlocks = transform.GetComponentsInChildren<InvisibleBlockController>();
+
+        invisibleBlocks.AddRange(invBlocks.ToList());
+    }
+
+    public void FlipInvisibleBlocks()
+    {
+        foreach(InvisibleBlockController invBlock in invisibleBlocks)
+        {
+            invBlock.Flip();
+        }
+    }
+
+    private void SetupInvisibleBlocks()
+    {
+        if(!GameManager.gravityIsDown)
+        {
+            FlipInvisibleBlocks();
+        }
+    }
+
 }
