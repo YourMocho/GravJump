@@ -13,7 +13,7 @@ public class InvertController : MonoBehaviour {
 
     void Awake()
     {
-        maxScale = new Vector3(6000, 6000, 6000);
+        maxScale = new Vector3(12000, 12000, 12000);
         targetScale = maxScale;
         isExpanded = false;
         expanding = true;

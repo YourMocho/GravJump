@@ -11,6 +11,7 @@ GameObject:
   - 212: {fileID: 21264610}
   - 58: {fileID: 5815320}
   - 114: {fileID: 11409066}
+  - 114: {fileID: 11406408}
   m_Layer: 0
   m_Name: GravChangePickUp
   m_TagString: JumpableFloor
@@ -25,7 +26,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 138872}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 77.9, y: 5.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,6 +45,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
+--- !u!114 &11406408
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 138872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a498653947f27645bf457cf14419f83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sizeChange: 0.25
+  timeDuration: 0.25
 --- !u!114 &11409066
 MonoBehaviour:
   m_ObjectHideFlags: 1

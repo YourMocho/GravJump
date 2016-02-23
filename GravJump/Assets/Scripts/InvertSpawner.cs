@@ -14,10 +14,23 @@ public class InvertSpawner : MonoBehaviour {
 
     public void Invert()
     {
-        GameObject tmp = Instantiate(invertCircle, transform.position, invertCircle.transform.rotation) as GameObject;
+        Vector3 spawnPos;
+        if (inverters.Count > 0) {
+            if (inverters[inverters.Count - 1].transform.position.z - transform.position.z < -10)
+            {
+                spawnPos = transform.position;
+            }
+            else {
+                spawnPos = new Vector3(transform.position.x, transform.position.y, inverters[inverters.Count - 1].transform.position.z - 0.5f);
+            }
+        } else
+        {
+            spawnPos = transform.position;
+        }
+
+        GameObject tmp = Instantiate(invertCircle, spawnPos, invertCircle.transform.rotation) as GameObject;
         tmp.transform.parent = transform;
         inverters.Add(tmp.GetComponent<InvertController>());
-        // tmp.GetComponent<InvertController>().Expand();
 
         DeletePairs();
     }

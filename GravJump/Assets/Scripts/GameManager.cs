@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public static InvertSpawner invertSpawner;
     private static Text scoreText;
     private static GameObject backButton;
+    private static GameObject pauseButton;
     public static LevelCreator levelCreator;
     public static Canvas canvas;
     public static CircleCollider2D playerJumpTrigger;
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour {
         invertSpawner = GameObject.Find("InvertSpawner").GetComponent<InvertSpawner>();
         backButton = GameObject.Find("BackButton");
         backButton.SetActive(false);
+        pauseButton = GameObject.Find("PauseButton");
         countdownText = GameObject.Find("CountdownText").GetComponent<Text>();
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
@@ -167,6 +169,7 @@ public class GameManager : MonoBehaviour {
 
         if (paused)
         {
+            print("game is paused");
             playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY;
             countdownText.text = "Paused";
             backButton.SetActive(true);
@@ -174,6 +177,7 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
+            print("game is resumed");
             playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
             countdownText.text = "";
             backButton.SetActive(false);
@@ -217,5 +221,10 @@ public class GameManager : MonoBehaviour {
     public static void GameOver()
     {
         SceneManager.LoadScene("Menu");
+    }
+
+    public static void ShowPauseButton(bool state)
+    {
+        pauseButton.SetActive(state);
     }
 }

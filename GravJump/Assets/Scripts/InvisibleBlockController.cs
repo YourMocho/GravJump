@@ -16,7 +16,7 @@ public class InvisibleBlockController : MonoBehaviour {
 
         if (invertedBlock)
         {
-            Hide();
+            Flip();
         }
 
         renderer.color = GameManager.blockColour;
@@ -45,6 +45,11 @@ public class InvisibleBlockController : MonoBehaviour {
 
     public void Flip()
     {
+        if(renderer == null || collider == null)
+        {
+            renderer = GetComponent<SpriteRenderer>();
+            collider = GetComponent<BoxCollider2D>();
+        }
         if (renderer.enabled)
         {
             Hide();

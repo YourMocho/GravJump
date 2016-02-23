@@ -45,7 +45,6 @@ public class LevelCreator : MonoBehaviour {
         allPossibleLevelPieces = p.ToList<LevelPiece>();
 
         startingPiece = Resources.Load<LevelPiece>("Prefabs/StartPiece");
-        print(startingPiece);
     }   
 
     void Start()
@@ -150,9 +149,11 @@ public class LevelCreator : MonoBehaviour {
 
         if (currentLevelPieces.Count > 0)
         {
+
             randomIndex = (int)Random.Range(0, allPossibleLevelPieces.Count);
 
             tmpPiece = Instantiate(allPossibleLevelPieces[randomIndex].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+            print("instantiated new piece: " +tmpPiece.name);
 
             if (allPossibleLevelPieces[randomIndex].startDirection == currentLevelPieces[currentLevelPieces.Count - 1].endDirection) //both pieces are 1s or 2s or 3s
             {
@@ -165,21 +166,19 @@ public class LevelCreator : MonoBehaviour {
                 if(rand < 0.5)
                 {
                     tmpPiece.GetComponent<LevelPiece>().FlipHorizontal();
-                    print("flipped new piece");
                 }
             }
             if (Mathf.Abs(allPossibleLevelPieces[randomIndex].startDirection - currentLevelPieces[currentLevelPieces.Count - 1].endDirection) == 2) //new piece is opposite of old one so have to flip
             {
                 //flip piece
                 tmpPiece.GetComponent<LevelPiece>().FlipHorizontal();
-                print("flipped new piece");
             }
 
 
 
         } else
         {
-            print("first piece");
+            print("start piece");
 
             tmpPiece = Instantiate(startingPiece.gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
         }
@@ -244,7 +243,6 @@ public class LevelCreator : MonoBehaviour {
 
     public void RemovePiecesUntilLastCheckpoint()
     {
-        print("removing pieces");
         int removeIndex = 0;
         for (int i = 0; i < currentLevelPieces.Count; i++)
         {
@@ -254,12 +252,14 @@ public class LevelCreator : MonoBehaviour {
                 break;
             }
         }
-        print("removing" + removeIndex + "pieces");
+
         for (int i = 0; i < removeIndex; i++)
         {
             Destroy(currentLevelPieces[0].gameObject);
             currentLevelPieces.RemoveAt(0);
         }
+
+        print("removed " + removeIndex + " pieces");
     }
 
 }

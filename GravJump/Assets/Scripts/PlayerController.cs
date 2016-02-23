@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour {
             GameManager.gameStarted = false;
             rigidbody.constraints = RigidbodyConstraints2D.FreezePositionY;
             renderer.enabled = false;
+            GameManager.ShowPauseButton(false);
         }
         if(!isAlive && !displayingDeathParticles)
         {
@@ -64,6 +65,7 @@ public class PlayerController : MonoBehaviour {
                 isAlive = true;
                 rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
                 renderer.enabled = true;
+                GameManager.ShowPauseButton(true);
             }
         }
 
