@@ -20,7 +20,7 @@ public class Checkpoint : MonoBehaviour {
         flag = transform.GetChild(1).gameObject;
         flag.SetActive(false);
 
-        respawnNumber = 5;
+        respawnNumber = 0;
     }
 
     void Start()

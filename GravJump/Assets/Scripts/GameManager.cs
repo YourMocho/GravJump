@@ -7,18 +7,21 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-    private static Text countdownText;
-    private static GameObject textBackground;
+
     public static LevelMover levelMover;
     public static PlayerController playerController;
-    public static GameObject invertColoursPlane;
     public static InvertSpawner invertSpawner;
     private static Text scoreText;
-    private static GameObject backButton;
     private static GameObject pauseButton;
     public static LevelCreator levelCreator;
     public static Canvas canvas;
     public static CircleCollider2D playerJumpTrigger;
+
+    private static GameObject countdownScreen;
+    private static GameObject gameOverScreen;
+    private static GameObject pauseScreen;
+    private static Text countdownText;
+
 
     private static int score = 0;
     private static int countdown;
@@ -41,20 +44,23 @@ public class GameManager : MonoBehaviour {
     void Awake()
     {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        invertColoursPlane = GameObject.Find("InvertColoursPlane");
-        invertColoursPlane.SetActive(false);
         invertSpawner = GameObject.Find("InvertSpawner").GetComponent<InvertSpawner>();
-        backButton = GameObject.Find("BackButton");
-        backButton.SetActive(false);
-        pauseButton = GameObject.Find("PauseButton");
-        countdownText = GameObject.Find("CountdownText").GetComponent<Text>();
-        scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-        textBackground = GameObject.Find("TextBackground");
         playerJumpTrigger = GameObject.Find("JumpTrigger").GetComponent<CircleCollider2D>();
         levelCreator = GameObject.Find("LevelAnchor").GetComponent<LevelCreator>();
+
+        countdownScreen = GameObject.Find("CountdownScreen");
+        gameOverScreen = GameObject.Find("GameOverScreen");
+        pauseScreen = GameObject.Find("PauseScreen");
+        countdownText = countdownScreen.transform.GetChild(0).GetComponent<Text>();
+        pauseButton = GameObject.Find("PauseButton");
+        scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         scoreText.text = "";
+
+        countdownScreen.SetActive(false);
+        gameOverScreen.SetActive(false);
+        pauseScreen.SetActive(false);
     }
 
     void Start() { 
@@ -100,17 +106,19 @@ public class GameManager : MonoBehaviour {
 
     public static void StartGame()
     {
-        textBackground.SetActive(false);
-        countdownText.text = "";
+        countdownScreen.SetActive(false);
+
+       // countdownText.text = "";
         gameStarted = true;
         Physics2D.gravity = gravity;
     }
 
     public static void StartCountdown()
     {
+        countdownScreen.SetActive(true);
+
         gameStarted = false;
         Physics2D.gravity = Vector2.zero;
-        textBackground.SetActive(true);
         countdown = 3;
         timer = Time.time;
         paused = false;
@@ -170,26 +178,28 @@ public class GameManager : MonoBehaviour {
         if (paused)
         {
             print("game is paused");
+            pauseButton.SetActive(false);
+            pauseScreen.SetActive(true);
+            countdownScreen.SetActive(false);
             playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY;
-            countdownText.text = "Paused";
-            backButton.SetActive(true);
-            textBackground.SetActive(true);
         }
         else
         {
             print("game is resumed");
+            pauseButton.SetActive(true);
+            pauseScreen.SetActive(false);
             playerController.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-            countdownText.text = "";
-            backButton.SetActive(false);
-            textBackground.SetActive(false);
+
+            if (countdown > 0)
+            {
+                countdownScreen.SetActive(true);
+            }
+
         }
     }
 
     public static void InvertColours()
     {
-        //invertColoursPlane.SetActive(!invertColoursPlane.activeSelf);
-
-        //invertColoursCircle.Reverse();
         invertSpawner.Invert();
     }
 
@@ -220,7 +230,8 @@ public class GameManager : MonoBehaviour {
 
     public static void GameOver()
     {
-        SceneManager.LoadScene("Menu");
+        //SceneManager.LoadScene("Menu");
+        gameOverScreen.SetActive(true);
     }
 
     public static void ShowPauseButton(bool state)
