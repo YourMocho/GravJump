@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
 
     public static bool gravityIsDown = true;
 
-    private static Vector2 gravity = new Vector2(0.0f, -9.8f);
+    public static Vector2 gravity = new Vector2(0.0f, -9.8f);
 
     public static Color blockColour = new Color(212 / 255f, 125 / 255f, 67 / 255f);
    // public static Color blockColour = new Color(43/255f, 130/ 255f,188/ 255f); //inverted
