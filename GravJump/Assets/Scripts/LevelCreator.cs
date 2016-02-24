@@ -41,10 +41,20 @@ public class LevelCreator : MonoBehaviour {
 
     private void LoadPossibleLevelPieces()
     {
-        LevelPiece[] p = Resources.LoadAll<LevelPiece>("Prefabs/LevelPieces/");
-        allPossibleLevelPieces = p.ToList<LevelPiece>();
+        GameObject[] p;
+        // p = Resources.LoadAll<LevelPiece>("Prefabs/LevelPieces/");
+        //allPossibleLevelPieces = p.ToList<LevelPiece>();
 
-        startingPiece = Resources.Load<LevelPiece>("Prefabs/StartPiece");
+        p = GameObject.FindGameObjectsWithTag("LevelPiece");
+
+        foreach(GameObject piece in p)
+        {
+            allPossibleLevelPieces.Add(piece.GetComponent<LevelPiece>());
+            piece.gameObject.SetActive(false);
+        }
+
+        //startingPiece = Resources.Load<LevelPiece>("Prefabs/StartPiece");
+        startingPiece = GameObject.FindGameObjectWithTag("StartPiece").GetComponent<LevelPiece>();
     }   
 
     void Start()
@@ -154,7 +164,7 @@ public class LevelCreator : MonoBehaviour {
             print("random NO: " + randomIndex + " out of: " + allPossibleLevelPieces.Count);
             tmpPiece = Instantiate(allPossibleLevelPieces[randomIndex].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
             print("instantiated new piece: " +tmpPiece.name);
-
+            tmpPiece.GetComponent<LevelPiece>().Setup();
             if (allPossibleLevelPieces[randomIndex].startDirection == currentLevelPieces[currentLevelPieces.Count - 1].endDirection) //both pieces are 1s or 2s or 3s
             {
      
@@ -181,6 +191,7 @@ public class LevelCreator : MonoBehaviour {
             print("start piece");
 
             tmpPiece = Instantiate(startingPiece.gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+            tmpPiece.GetComponent<LevelPiece>().Setup();
         }
 
         tmpPiece.SetActive(true);

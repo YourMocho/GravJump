@@ -9,7 +9,7 @@ public class InvisibleBlockController : MonoBehaviour {
     public bool invertedBlock;
     public bool visible;
 
-    void Awake()
+    public void Setup()
     {
 
         renderer = GetComponent<SpriteRenderer>();
@@ -21,7 +21,7 @@ public class InvisibleBlockController : MonoBehaviour {
         {
             Hide();
         }
-        //print("awake invBlock: " + name + " isVisible: " + visible + " isInvertedBlock: " + invertedBlock + " GRavityIsdown: " + GameManager.gravityIsDown);
+        //print("setup invBlock: " + name + " isVisible: " + visible + " isInvertedBlock: " + invertedBlock + " GRavityIsdown: " + GameManager.gravityIsDown);
 
         renderer.color = GameManager.blockColour;
     }

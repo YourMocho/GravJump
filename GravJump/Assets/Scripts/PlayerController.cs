@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour {
             GameManager.gameStarted = false;
             rigidbody.constraints = RigidbodyConstraints2D.FreezePositionY;
             renderer.enabled = false;
-            GameManager.ShowPauseButton(false);
+            GameManager.pauseButton.SetActive(false);
         }
         if(!isAlive && !displayingDeathParticles)
         {
@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour {
         {
             if(timer - Time.time < 0 && !GameManager.gameOver)
             {
+                print("not dead anymore??");
                 ShowDeathParticles(false);
 
                 isAlive = true;
@@ -75,7 +76,7 @@ public class PlayerController : MonoBehaviour {
                 renderer.enabled = true;
 
                 GameManager.PlayerDied();
-                GameManager.ShowPauseButton(true);
+                GameManager.pauseButton.SetActive(true);
             }
         }
 
@@ -132,14 +133,14 @@ public class PlayerController : MonoBehaviour {
         {
             GameManager.gravityIsDown = true;
         }
-        print(GameManager.gravityIsDown);
+        //print(GameManager.gravityIsDown);
     }
 
     public void ResetGravityDirectionAndColours()
     {
         if (GameManager.lastCheckpoint != null)
         {
-            if ((GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale > 0) || (!GameManager.lastCheckpoint.upsideDown && rigidbody.gravityScale < 0)) //set grav and colour invert depending on checkpoint orientation
+            if ((GameManager.lastCheckpoint.upsideDown && GameManager.gravityIsDown) || (!GameManager.lastCheckpoint.upsideDown && !GameManager.gravityIsDown)) //set grav and colour invert depending on checkpoint orientation
             {
                 ActuallyChangeGravity();
             }

@@ -11,6 +11,8 @@ TagManager:
   - Gap
   - JumpTrigger
   - StartPiece
+  - Checkpoint
+  - LevelPiece
   layers:
   - Default
   - TransparentFX

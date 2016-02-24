@@ -21,7 +21,7 @@ public class LevelPiece : MonoBehaviour {
 
     public List<InvisibleBlockController> invisibleBlocks;
 
-    void Awake () {
+    public void Setup () {
         upsideDown = false;
 
        // print("Awake: " + name);
@@ -31,11 +31,15 @@ public class LevelPiece : MonoBehaviour {
         {
             checkpoint = transform.FindChild("Checkpoint").GetComponent<Checkpoint>();
             checkpoint.SetVisibility(false);
+
+            checkpoint.Setup();
         }
 
         invisibleBlocks = new List<InvisibleBlockController>();
 
         FindInvisibleBlocks();
+
+
     }
 
     public void MakeCheckpoint()
@@ -53,6 +57,7 @@ public class LevelPiece : MonoBehaviour {
         upsideDown = true;
         checkpoint.CheckUpsideDown();
         checkpoint.upsideDown = !checkpoint.upsideDown;
+        print("just flipped so im now: " + checkpoint.upsideDown);
 
         transform.localScale = new Vector3(1, transform.localScale.y * -1, 1);
         
@@ -83,6 +88,11 @@ public class LevelPiece : MonoBehaviour {
         invisibleBlocks.AddRange(invBlocks.ToList());
 
         print("Found " + invBlocks.Length + " Inv blocks: " + name);
+
+        foreach (InvisibleBlockController invBlock in invisibleBlocks)
+        {
+            invBlock.Setup();
+        }
     }
 
     public void FlipInvisibleBlocks()

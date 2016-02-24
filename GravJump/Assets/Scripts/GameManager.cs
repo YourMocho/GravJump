@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     public static PlayerController playerController;
     public static InvertSpawner invertSpawner;
     private static Text scoreText;
-    private static GameObject pauseButton;
+    public static GameObject pauseButton;
     public static LevelCreator levelCreator;
     public static Canvas canvas;
     public static CircleCollider2D playerJumpTrigger;
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour {
     private static Text endScoreText;
     private static Text bestScoreText;
 
-
+    public static int checkpointRespawns;
     private static int score;
     private static int countdown;
     private static float timer;
@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
         gameOverScreen.SetActive(false);
         pauseScreen.SetActive(false);
 
+        checkpointRespawns = 5;
         score = 0;
         paused = false;
         startSpeed = 10;
@@ -252,12 +253,13 @@ public class GameManager : MonoBehaviour {
     public static void GameOver()
     {
         gameOver = true;
+        pauseButton.SetActive(false);
         gameOverScreen.SetActive(true);
         endScoreText.text = "Score\n" + scoreText.text;
         bestScoreText.text = "Best\n" + PlayerPrefs.GetInt("score").ToString();
     }
 
-    public static void ShowPauseButton(bool state)
+    private static void ShowPauseButton(bool state)
     {
         pauseButton.SetActive(state);
     }

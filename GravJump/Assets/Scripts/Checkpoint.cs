@@ -12,15 +12,16 @@ public class Checkpoint : MonoBehaviour {
     private TextMesh respawnText;
     public int respawnNumber; //make private
 
-    void Awake()
+    public void Setup()
     {
+       // print("checkpoint awake");
         CheckUpsideDown();
 
         pole = transform.GetChild(0).gameObject;
         flag = transform.GetChild(1).gameObject;
         flag.SetActive(false);
 
-        respawnNumber = 0;
+        respawnNumber = GameManager.checkpointRespawns;
     }
 
     void Start()
@@ -60,7 +61,6 @@ public class Checkpoint : MonoBehaviour {
         tmpText.transform.parent = flag.transform;
         tmpText.transform.localPosition = new Vector3(-0.5f, 3, -1);
         tmpText.AddComponent<TextMesh>();
-      //  tmpText.AddComponent<MeshRenderer>();
 
         respawnText = tmpText.GetComponent<TextMesh>();
         respawnText.fontSize = 100;
@@ -80,6 +80,7 @@ public class Checkpoint : MonoBehaviour {
         {
             upsideDown = false;
         }
+       // print("checking upside down: " + name + " ---> " + upsideDown);
     }
 
     public void SetVisibility(bool state)
