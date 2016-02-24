@@ -3,16 +3,17 @@ using System.Collections;
 
 public class InvertController : MonoBehaviour {
 
-    float increase = 15000f;
+    private float increase;
     private Vector3 targetScale;
     private Vector3 maxScale;
-    public bool expanding = true;
+    public bool expanding;
     private bool shrinking;
 
     public bool isExpanded;
 
     void Awake()
     {
+        increase = 15000f;
         maxScale = new Vector3(12000, 12000, 12000);
         targetScale = maxScale;
         isExpanded = false;

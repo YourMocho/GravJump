@@ -4,11 +4,10 @@ using UnityEngine.UI;
 
 public class LevelMover : MonoBehaviour {
 
-    public float Xspeed = 5;
+    public float Xspeed;
     private Vector2 movementVector;
     private new Rigidbody2D rigidbody;
     public Vector3 levelSpawnPoint;
-    //public bool moving = true;
 
     void Start () {
         levelSpawnPoint = transform.position;

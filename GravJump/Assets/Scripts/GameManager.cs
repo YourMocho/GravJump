@@ -21,24 +21,27 @@ public class GameManager : MonoBehaviour {
     private static GameObject gameOverScreen;
     private static GameObject pauseScreen;
     private static Text countdownText;
+    private static Text endScoreText;
+    private static Text bestScoreText;
 
 
-    private static int score = 0;
+    private static int score;
     private static int countdown;
     private static float timer;
     public static bool gameStarted;
-    public static bool paused = false;
-    public static int startSpeed = 10;
-    public static int maxSpeed = 25;
-    public static int minSpeed = 3;
+    public static bool paused;
+    public static int startSpeed;
+    public static int maxSpeed;
+    public static int minSpeed;
+    public static bool gameOver;
 
-    public static Checkpoint lastCheckpoint = null;
+    public static Checkpoint lastCheckpoint;
 
-    public static bool gravityIsDown = true;
+    public static bool gravityIsDown;
 
-    public static Vector2 gravity = new Vector2(0.0f, -9.8f);
+    public static Vector2 gravity;
 
-    public static Color blockColour = new Color(212 / 255f, 125 / 255f, 67 / 255f);
+    public static Color blockColour;
    // public static Color blockColour = new Color(43/255f, 130/ 255f,188/ 255f); //inverted
 
     void Awake()
@@ -52,6 +55,8 @@ public class GameManager : MonoBehaviour {
 
         countdownScreen = GameObject.Find("CountdownScreen");
         gameOverScreen = GameObject.Find("GameOverScreen");
+        endScoreText = gameOverScreen.transform.GetChild(1).GetComponent<Text>();
+        bestScoreText = gameOverScreen.transform.GetChild(2).GetComponent<Text>();
         pauseScreen = GameObject.Find("PauseScreen");
         countdownText = countdownScreen.transform.GetChild(0).GetComponent<Text>();
         pauseButton = GameObject.Find("PauseButton");
@@ -61,6 +66,16 @@ public class GameManager : MonoBehaviour {
         countdownScreen.SetActive(false);
         gameOverScreen.SetActive(false);
         pauseScreen.SetActive(false);
+
+        score = 0;
+        paused = false;
+        startSpeed = 10;
+        maxSpeed = 25;
+        minSpeed = 3;
+        gameOver = false;
+        gravityIsDown = true;
+        gravity = new Vector2(0.0f, -9.8f);
+        blockColour = new Color(212 / 255f, 125 / 255f, 67 / 255f);
     }
 
     void Start() { 
@@ -138,11 +153,18 @@ public class GameManager : MonoBehaviour {
             lastCheckpoint.UpdateRespawnNumber();
         }
 
+        if (!gameOver)
+        {
+            ResetMapAndPlayer();
+            StartCountdown();
+        }
+    }
+
+    public static void ResetMapAndPlayer()
+    {
         playerController.RespawnPlayer();
-        StartCountdown();
         ResetMapToSpawnPoint();
         ResetPickUps();
-
     }
 
     private static void ResetPickUps()
@@ -171,12 +193,11 @@ public class GameManager : MonoBehaviour {
         score = (int)(levelMover.transform.position.x * -1);
     }
 
-    public static void TogglePause()
+    public static void PauseGame(bool isPaused)
     {
-        paused = !paused;
-
-        if (paused)
+        if (isPaused)
         {
+            paused = true;
             print("game is paused");
             pauseButton.SetActive(false);
             pauseScreen.SetActive(true);
@@ -185,6 +206,7 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
+            paused = false;
             print("game is resumed");
             pauseButton.SetActive(true);
             pauseScreen.SetActive(false);
@@ -194,7 +216,6 @@ public class GameManager : MonoBehaviour {
             {
                 countdownScreen.SetActive(true);
             }
-
         }
     }
 
@@ -230,8 +251,10 @@ public class GameManager : MonoBehaviour {
 
     public static void GameOver()
     {
-        //SceneManager.LoadScene("Menu");
+        gameOver = true;
         gameOverScreen.SetActive(true);
+        endScoreText.text = "Score\n" + scoreText.text;
+        bestScoreText.text = "Best\n" + PlayerPrefs.GetInt("score").ToString();
     }
 
     public static void ShowPauseButton(bool state)

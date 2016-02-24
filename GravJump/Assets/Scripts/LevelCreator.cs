@@ -18,7 +18,7 @@ public class LevelCreator : MonoBehaviour {
     private float rightBoundary;
 
     private int checkpointCount;
-    public int piecesPerCheckpoint = 1;
+    public int piecesPerCheckpoint;
     public LevelPiece checkpointPiece;
 
 
@@ -150,8 +150,8 @@ public class LevelCreator : MonoBehaviour {
         if (currentLevelPieces.Count > 0)
         {
 
-            randomIndex = (int)Random.Range(0, allPossibleLevelPieces.Count);
-
+            randomIndex = (int)Random.Range(0f, allPossibleLevelPieces.Count);
+            print("random NO: " + randomIndex + " out of: " + allPossibleLevelPieces.Count);
             tmpPiece = Instantiate(allPossibleLevelPieces[randomIndex].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
             print("instantiated new piece: " +tmpPiece.name);
 

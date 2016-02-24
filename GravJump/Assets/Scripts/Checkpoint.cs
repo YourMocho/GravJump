@@ -44,10 +44,13 @@ public class Checkpoint : MonoBehaviour {
     public void UpdateRespawnNumber()
     {
         respawnNumber--;
-        respawnText.text = respawnNumber.ToString();
+
         if(respawnNumber < 0)
         {
             GameManager.GameOver();
+        } else
+        {
+            respawnText.text = respawnNumber.ToString();
         }
     }
 

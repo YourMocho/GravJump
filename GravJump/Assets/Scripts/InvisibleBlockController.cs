@@ -7,17 +7,21 @@ public class InvisibleBlockController : MonoBehaviour {
     private new BoxCollider2D collider;
 
     public bool invertedBlock;
-    public bool visible = true;
+    public bool visible;
 
     void Awake()
     {
+
         renderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<BoxCollider2D>();
 
-        if (invertedBlock)
+        visible = true;
+
+        if((GameManager.gravityIsDown && invertedBlock) || (!GameManager.gravityIsDown && !invertedBlock))
         {
-            Flip();
+            Hide();
         }
+        //print("awake invBlock: " + name + " isVisible: " + visible + " isInvertedBlock: " + invertedBlock + " GRavityIsdown: " + GameManager.gravityIsDown);
 
         renderer.color = GameManager.blockColour;
     }
@@ -45,7 +49,7 @@ public class InvisibleBlockController : MonoBehaviour {
 
     public void Flip()
     {
-        if(renderer == null || collider == null)
+        if (renderer == null || collider == null)
         {
             renderer = GetComponent<SpriteRenderer>();
             collider = GetComponent<BoxCollider2D>();

@@ -99,15 +99,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.r
-      value: 0.8313726
+      value: 0.9338235
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.g
-      value: 0.4901961
+      value: 0.8225887
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.b
-      value: 0.2627451
+      value: 0.7484321
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.a

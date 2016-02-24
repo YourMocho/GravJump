@@ -10,16 +10,16 @@ public class PlayerController : MonoBehaviour {
     private float upperBoundary;
     private float lowerBoundary;
     private new SpriteRenderer renderer;
-    public int numberOfColliders = 0;
+    public int numberOfColliders;
 
-    public bool useTrail = false;
+    public bool useTrail;
     public GameObject trailObject;
     private List<GameObject> trail;
 
     private GameObject deathParticles;
-    private bool isAlive = true;
-    private bool displayingDeathParticles = false;
-    private float timer = 0;
+    private bool isAlive;
+    private bool displayingDeathParticles;
+    private float timer;
 
     void Awake()
     {
@@ -31,6 +31,14 @@ public class PlayerController : MonoBehaviour {
         renderer = GetComponent<SpriteRenderer>();
         deathParticles = GameObject.Find("DeathParticles");
         ShowDeathParticles(false);
+
+        numberOfColliders = 0;
+
+        useTrail = false;
+
+        isAlive = true;
+        displayingDeathParticles = false;
+        timer = 0;
     }
 
     void Start()
@@ -43,7 +51,7 @@ public class PlayerController : MonoBehaviour {
     void Update()
     {
         //moving off screen --> death
-        if (transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary && isAlive) {
+        if (transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary && isAlive && !GameManager.gameOver) {
             //GameManager.PlayerDied();
             isAlive = false;
             GameManager.gameStarted = false;
@@ -58,13 +66,15 @@ public class PlayerController : MonoBehaviour {
         }
         if(displayingDeathParticles)
         {
-            if(timer - Time.time < 0)
+            if(timer - Time.time < 0 && !GameManager.gameOver)
             {
                 ShowDeathParticles(false);
-                GameManager.PlayerDied();
+
                 isAlive = true;
                 rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
                 renderer.enabled = true;
+
+                GameManager.PlayerDied();
                 GameManager.ShowPauseButton(true);
             }
         }
@@ -115,7 +125,14 @@ public class PlayerController : MonoBehaviour {
         rigidbody.gravityScale *= -1;
         GameManager.InvertColours();
         GameManager.FlipInvisibleBlocks();
-        GameManager.gravityIsDown = !GameManager.gravityIsDown;
+        if (rigidbody.gravityScale < 0)
+        {
+            GameManager.gravityIsDown = false;
+        } else
+        {
+            GameManager.gravityIsDown = true;
+        }
+        print(GameManager.gravityIsDown);
     }
 
     public void ResetGravityDirectionAndColours()

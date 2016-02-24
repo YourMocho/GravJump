@@ -15,14 +15,16 @@ public class LevelPiece : MonoBehaviour {
     public int endDirection;
     public Transform endPos;
 
-    public bool upsideDown = false;
+    public bool upsideDown;
 
     public Checkpoint checkpoint; //make private
 
     public List<InvisibleBlockController> invisibleBlocks;
 
     void Awake () {
-        print("Awake: " + name);
+        upsideDown = false;
+
+       // print("Awake: " + name);
 
         endPos = transform.FindChild("EndPos");
         if (!tag.Equals("StartPiece"))
@@ -34,16 +36,6 @@ public class LevelPiece : MonoBehaviour {
         invisibleBlocks = new List<InvisibleBlockController>();
 
         FindInvisibleBlocks();
-        SetupInvisibleBlocks();
-
-    }
-
-    void Start()
-    {
-        print("Start: " + name);
-
-        //FlipHorizontal();
-
     }
 
     public void MakeCheckpoint()
@@ -81,11 +73,7 @@ public class LevelPiece : MonoBehaviour {
             endDirection = 1;
         }
 
-        foreach(InvisibleBlockController invBlock in invisibleBlocks)
-        {
-            //print("flipping blocks");
-           invBlock.Flip();
-        }
+        FlipInvisibleBlocks();
     }
 
     private void FindInvisibleBlocks()
@@ -104,15 +92,4 @@ public class LevelPiece : MonoBehaviour {
             invBlock.Flip();
         }
     }
-
-    private void SetupInvisibleBlocks()
-    {
-        if(!GameManager.gravityIsDown)
-        {
-            FlipInvisibleBlocks();
-
-        }
-        print("Setup inv blocks, grav is down = " + GameManager.gravityIsDown + " --> " + name);
-    }
-
 }
