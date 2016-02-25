@@ -85,6 +85,7 @@ public class LevelCreator : MonoBehaviour {
             SelectNextPieceWithFlipping();
         }
 
+        /*
         if (Input.GetKeyDown(KeyCode.P) || (Input.touchCount > 3))
         {
             string s = "Checkpoint Deaths:  ";
@@ -95,6 +96,7 @@ public class LevelCreator : MonoBehaviour {
             }
             GameObject.Find("DebugText").GetComponent<Text>().text = s;
         }
+        */
     }
 
     private void SelectNextPiece()

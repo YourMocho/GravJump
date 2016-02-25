@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour {
         gameOverScreen.SetActive(false);
         pauseScreen.SetActive(false);
 
-        checkpointRespawns = 1;
+        checkpointRespawns = 5;
         score = 0;
         paused = false;
         startSpeed = 10;
@@ -79,7 +79,8 @@ public class GameManager : MonoBehaviour {
         gameOver = false;
         gravityIsDown = true;
         gravity = new Vector2(0.0f, -9.8f);
-        blockColour = new Color(212 / 255f, 125 / 255f, 67 / 255f);
+        //blockColour = new Color(212 / 255f, 125 / 255f, 67 / 255f);
+        blockColour = new Color(181 / 255f, 151 / 255f, 85 / 255f);
     }
 
     void Start() { 
