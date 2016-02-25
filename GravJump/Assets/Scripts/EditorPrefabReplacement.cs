@@ -8,8 +8,9 @@ public class EditorPrefabReplacement : MonoBehaviour {
     public GameObject invisibleBlock;
     public GameObject invisibleBlockINVERTED;
     public GameObject checkPoint;
+    public GameObject gravityPickUp;
 
-	void Start () {
+    void Start () {
 
         /*
        GameObject[] gBlocks = GameObject.FindGameObjectsWithTag("GroundBlock");
@@ -69,7 +70,29 @@ public class EditorPrefabReplacement : MonoBehaviour {
 
            DestroyImmediate(invBlock.gameObject);
        }
-       */
+       
+
+        GameObject[] gravPickUps = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
+
+        foreach (GameObject gravPickUp in gravPickUps)
+        {
+            if (gravPickUp.name.StartsWith("GravChangePickUp"))
+            {
+                GameObject tmp = PrefabUtility.InstantiatePrefab(gravityPickUp) as GameObject;
+
+                tmp.transform.position = gravPickUp.transform.position;
+                tmp.transform.rotation = gravPickUp.transform.rotation;
+                tmp.transform.localScale = gravPickUp.transform.localScale;
+                tmp.transform.parent = gravPickUp.transform.parent;
+
+                DestroyImmediate(gravPickUp.gameObject);
+            }
+            else
+            {
+                print("nope");
+            }
+        }
+        */
     }
 
 }

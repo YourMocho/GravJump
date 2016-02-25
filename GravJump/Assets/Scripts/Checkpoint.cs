@@ -44,6 +44,7 @@ public class Checkpoint : MonoBehaviour {
 
     public void UpdateRespawnNumber()
     {
+        print("respawn number before: " + respawnNumber);
         respawnNumber--;
 
         if(respawnNumber < 0)

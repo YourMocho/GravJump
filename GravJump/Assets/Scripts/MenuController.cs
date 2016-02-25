@@ -19,7 +19,7 @@ public class MenuController : MonoBehaviour {
 
     public void StartGame()
     {
-        Physics2D.gravity = GameManager.gravity;
+        Physics2D.gravity = new Vector2(0.0f, -9.8f); ;
         print(menuPlayer.GetComponent<Rigidbody2D>().gravityScale);
         menuPlayer.GetComponent<Rigidbody2D>().gravityScale *= -1;
         Instantiate(invertCircle, menuPlayer.transform.position, invertCircle.transform.rotation);

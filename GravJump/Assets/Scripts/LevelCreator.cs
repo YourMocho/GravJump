@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class LevelCreator : MonoBehaviour {
 
+    
+
     public List<LevelPiece> allPossibleLevelPieces;
     public LevelPiece startingPiece;
 
@@ -17,10 +19,18 @@ public class LevelCreator : MonoBehaviour {
     private Transform nextPieceSpawnpoint;
     private float rightBoundary;
 
+    public bool useCheckpointsInsteadOfDifficulty;
+    public int difficultyPerCheckpoint;
+    private int cumulitiveDifficulty = 0;
+
+    public bool useMaxDifficulty;
+    public int maxDifficulty;
+
     private int checkpointCount;
     public int piecesPerCheckpoint;
     public LevelPiece checkpointPiece;
 
+    public GameObject levelPiecesParent;
 
     public List<int> deathsPerCheckPoint;
 
@@ -44,6 +54,8 @@ public class LevelCreator : MonoBehaviour {
         GameObject[] p;
         // p = Resources.LoadAll<LevelPiece>("Prefabs/LevelPieces/");
         //allPossibleLevelPieces = p.ToList<LevelPiece>();
+
+        levelPiecesParent.SetActive(true);
 
         p = GameObject.FindGameObjectsWithTag("LevelPiece");
 
@@ -139,14 +151,25 @@ public class LevelCreator : MonoBehaviour {
         tmpPiece.transform.parent = transform;
         nextPieceSpawnpoint = tmpPiece.GetComponent<LevelPiece>().endPos;
 
-        checkpointCount++;
-
-        if (checkpointCount == piecesPerCheckpoint) 
+        if (useCheckpointsInsteadOfDifficulty)
         {
-           
+            print("checkpoints");
+            checkpointCount++;
+            if (checkpointCount == piecesPerCheckpoint)
+            {
                 tmpPiece.GetComponent<LevelPiece>().MakeCheckpoint();
-
-            checkpointCount = 0;
+                checkpointCount = 0;
+            }
+        } else
+        {
+            cumulitiveDifficulty += tmpPiece.GetComponent<LevelPiece>().difficulty;
+            print(cumulitiveDifficulty);
+            if(cumulitiveDifficulty > difficultyPerCheckpoint)
+            {
+                print("over dif so made checkpoint");
+                tmpPiece.GetComponent<LevelPiece>().MakeCheckpoint();
+                cumulitiveDifficulty = 0;
+            }
         }
 
         currentLevelPieces.Add(tmpPiece.GetComponent<LevelPiece>());
@@ -161,10 +184,38 @@ public class LevelCreator : MonoBehaviour {
         {
 
             randomIndex = (int)Random.Range(0f, allPossibleLevelPieces.Count);
+
             print("random NO: " + randomIndex + " out of: " + allPossibleLevelPieces.Count);
+
+            bool foundPiece = false;
+
+            while (!foundPiece)
+            {
+                if (useMaxDifficulty)
+                {
+                    print("using max dif");
+
+                    if(allPossibleLevelPieces[randomIndex].difficulty > maxDifficulty)
+                    {
+                        print(allPossibleLevelPieces[randomIndex].difficulty + " was too difficult");
+
+                        randomIndex = (int)Random.Range(0f, allPossibleLevelPieces.Count);
+                    } else
+                    {
+                        foundPiece = true;
+                    }
+                } else
+                {
+                    foundPiece = true;
+                }
+            }
+
             tmpPiece = Instantiate(allPossibleLevelPieces[randomIndex].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+
             print("instantiated new piece: " +tmpPiece.name);
+
             tmpPiece.GetComponent<LevelPiece>().Setup();
+
             if (allPossibleLevelPieces[randomIndex].startDirection == currentLevelPieces[currentLevelPieces.Count - 1].endDirection) //both pieces are 1s or 2s or 3s
             {
      
@@ -200,10 +251,26 @@ public class LevelCreator : MonoBehaviour {
 
         checkpointCount++;
 
-        if (checkpointCount == piecesPerCheckpoint)
+        if (useCheckpointsInsteadOfDifficulty)
         {
-            tmpPiece.GetComponent<LevelPiece>().MakeCheckpoint();
-            checkpointCount = 0;
+            print("checkpoints");
+            checkpointCount++;
+            if (checkpointCount == piecesPerCheckpoint)
+            {
+                tmpPiece.GetComponent<LevelPiece>().MakeCheckpoint();
+                checkpointCount = 0;
+            }
+        }
+        else
+        {
+            cumulitiveDifficulty += tmpPiece.GetComponent<LevelPiece>().difficulty;
+            print(cumulitiveDifficulty);
+            if (cumulitiveDifficulty > difficultyPerCheckpoint)
+            {
+                print("over dif so made checkpoint");
+                tmpPiece.GetComponent<LevelPiece>().MakeCheckpoint();
+                cumulitiveDifficulty = 0;
+            }
         }
 
         currentLevelPieces.Add(tmpPiece.GetComponent<LevelPiece>());

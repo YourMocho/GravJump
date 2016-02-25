@@ -11,6 +11,7 @@ public class LevelPiece : MonoBehaviour {
         3 - Bottom
     */
 
+    public int difficulty;
     public int startDirection;
     public int endDirection;
     public Transform endPos;
@@ -57,7 +58,7 @@ public class LevelPiece : MonoBehaviour {
         upsideDown = true;
         checkpoint.CheckUpsideDown();
         checkpoint.upsideDown = !checkpoint.upsideDown;
-        print("just flipped so im now: " + checkpoint.upsideDown);
+        //print("just flipped so im now: " + checkpoint.upsideDown);
 
         transform.localScale = new Vector3(1, transform.localScale.y * -1, 1);
         

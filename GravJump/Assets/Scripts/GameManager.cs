@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
+    public GameObject screensParent;
 
     public static LevelMover levelMover;
     public static PlayerController playerController;
@@ -46,6 +47,8 @@ public class GameManager : MonoBehaviour {
 
     void Awake()
     {
+        screensParent.SetActive(true);
+
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         invertSpawner = GameObject.Find("InvertSpawner").GetComponent<InvertSpawner>();
         levelMover = GameObject.Find("LevelAnchor").GetComponent<LevelMover>();
@@ -67,7 +70,7 @@ public class GameManager : MonoBehaviour {
         gameOverScreen.SetActive(false);
         pauseScreen.SetActive(false);
 
-        checkpointRespawns = 5;
+        checkpointRespawns = 1;
         score = 0;
         paused = false;
         startSpeed = 10;
@@ -142,22 +145,18 @@ public class GameManager : MonoBehaviour {
 
     public static void PlayerDied()
     {
-        print("player has died");
+ 
 
         if (PlayerPrefs.GetInt("score") < score)
         {
             PlayerPrefs.SetInt("score", score);
         }
 
-        if (lastCheckpoint != null)
-        {
-            lastCheckpoint.UpdateRespawnNumber();
-        }
-
         if (!gameOver)
         {
             ResetMapAndPlayer();
             StartCountdown();
+            print("player has respawned");
         }
     }
 
@@ -174,6 +173,7 @@ public class GameManager : MonoBehaviour {
         foreach(GameObject pickUp in pickUps)
         {
             pickUp.GetComponent<SpriteRenderer>().enabled = true;
+            pickUp.GetComponent<CircleCollider2D>().enabled = true;
         }
     }
 
@@ -257,10 +257,6 @@ public class GameManager : MonoBehaviour {
         gameOverScreen.SetActive(true);
         endScoreText.text = "Score\n" + scoreText.text;
         bestScoreText.text = "Best\n" + PlayerPrefs.GetInt("score").ToString();
-    }
-
-    private static void ShowPauseButton(bool state)
-    {
-        pauseButton.SetActive(state);
+        print("game over");
     }
 }

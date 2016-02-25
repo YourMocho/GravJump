@@ -10,6 +10,7 @@ public class PlayerResetPickUp : MonoBehaviour {
         {
             GameManager.ResetPlayerForPickUp();
             GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<CircleCollider2D>().enabled = false;
         }
     }
 

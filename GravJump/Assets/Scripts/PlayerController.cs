@@ -43,21 +43,28 @@ public class PlayerController : MonoBehaviour {
 
     void Start()
     {
-        leftBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - (renderer.bounds.size.x / 2f) * GameManager.canvas.scaleFactor;
-        upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + (renderer.bounds.size.y / 2f) * GameManager.canvas.scaleFactor;
-        lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - (renderer.bounds.size.y / 2f) * GameManager.canvas.scaleFactor;
+        leftBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - (renderer.bounds.size.x / 2f);
+        upperBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y + (renderer.bounds.size.y / 2f);
+        //print(upperBoundary + " : " + (renderer.bounds.size.y / 2f) + " : " + Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, 0)).y);
+        lowerBoundary = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y - (renderer.bounds.size.y / 2f);
     }
 
     void Update()
     {
         //moving off screen --> death
-        if (transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary && isAlive && !GameManager.gameOver) {
+        if ((transform.position.x < leftBoundary || transform.position.y > upperBoundary || transform.position.y < lowerBoundary) && isAlive && !GameManager.gameOver) {
             //GameManager.PlayerDied();
+            print("player has died");
             isAlive = false;
             GameManager.gameStarted = false;
             rigidbody.constraints = RigidbodyConstraints2D.FreezePositionY;
             renderer.enabled = false;
             GameManager.pauseButton.SetActive(false);
+
+            if (GameManager.lastCheckpoint != null)
+            {
+                GameManager.lastCheckpoint.UpdateRespawnNumber();
+            }
         }
         if(!isAlive && !displayingDeathParticles)
         {
