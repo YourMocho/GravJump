@@ -47599,6 +47599,7 @@ MonoBehaviour:
   currentLevelPieces: []
   useCheckpointsInsteadOfDifficulty: 0
   difficultyPerCheckpoint: 10
+  allowedDifficultyOverflow: 4
   useMaxDifficulty: 1
   maxDifficulty: 9
   piecesPerCheckpoint: 1

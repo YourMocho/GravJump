@@ -21,6 +21,7 @@ public class LevelCreator : MonoBehaviour {
 
     public bool useCheckpointsInsteadOfDifficulty;
     public int difficultyPerCheckpoint;
+    public int allowedDifficultyOverflow;
     private int cumulitiveDifficulty = 0;
 
     public bool useMaxDifficulty;
@@ -187,7 +188,7 @@ public class LevelCreator : MonoBehaviour {
 
             randomIndex = (int)Random.Range(0f, allPossibleLevelPieces.Count);
 
-            print("random NO: " + randomIndex + " out of: " + allPossibleLevelPieces.Count);
+            //print("random NO: " + randomIndex + " out of: " + allPossibleLevelPieces.Count);
 
             bool foundPiece = false;
 
@@ -195,21 +196,32 @@ public class LevelCreator : MonoBehaviour {
             {
                 if (useMaxDifficulty)
                 {
-                    print("using max dif");
+                    //print("using max dif");
 
                     if(allPossibleLevelPieces[randomIndex].difficulty > maxDifficulty)
                     {
-                        print(allPossibleLevelPieces[randomIndex].difficulty + " was too difficult");
+                        //print(allPossibleLevelPieces[randomIndex].difficulty + " was too difficult");
 
                         randomIndex = (int)Random.Range(0f, allPossibleLevelPieces.Count);
                     } else
                     {
+                       // print("below max dif - piece " + allPossibleLevelPieces[randomIndex].name);
                         foundPiece = true;
                     }
                 } else
                 {
                     foundPiece = true;
                 }
+                if (foundPiece)
+                {
+                    if (cumulitiveDifficulty + allPossibleLevelPieces[randomIndex].difficulty > difficultyPerCheckpoint + allowedDifficultyOverflow)
+                    {
+                       // print("over overflow dif - piece " + allPossibleLevelPieces[randomIndex].name);
+                        foundPiece = false;
+                        randomIndex = (int)Random.Range(0f, allPossibleLevelPieces.Count);
+                    }
+                }
+
             }
 
             tmpPiece = Instantiate(allPossibleLevelPieces[randomIndex].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
@@ -237,8 +249,6 @@ public class LevelCreator : MonoBehaviour {
                 tmpPiece.GetComponent<LevelPiece>().FlipHorizontal();
             }
 
-
-
         } else
         {
             print("start piece");
@@ -250,8 +260,6 @@ public class LevelCreator : MonoBehaviour {
         tmpPiece.SetActive(true);
         tmpPiece.transform.parent = transform;
         nextPieceSpawnpoint = tmpPiece.GetComponent<LevelPiece>().endPos;
-
-        checkpointCount++;
 
         if (useCheckpointsInsteadOfDifficulty)
         {
