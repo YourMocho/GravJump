@@ -48,6 +48,11 @@ public class LevelPiece : MonoBehaviour {
         if (!tag.Equals("StartPiece"))
         {
             checkpoint.SetVisibility(true);
+
+            if(GameManager.levelCreator.increaseMaxDifficultyWithEachCheckpoint)
+            {
+                GameManager.levelCreator.maxDifficulty++;
+            }
         }
     }
 

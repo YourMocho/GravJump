@@ -26,6 +26,7 @@ public class LevelCreator : MonoBehaviour {
 
     public bool useMaxDifficulty;
     public int maxDifficulty;
+    public bool increaseMaxDifficultyWithEachCheckpoint;
 
     private int checkpointCount;
     public int piecesPerCheckpoint;
