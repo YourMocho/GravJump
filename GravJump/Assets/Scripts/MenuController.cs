@@ -9,8 +9,9 @@ public class MenuController : MonoBehaviour {
     private GameObject menuPlayer;
     public GameObject invertCircle; 
     private GameObject StartButton;
-	
-	void Awake () {
+   // private bool showTutorial;
+
+    void Awake () {
         menuPlayer = GameObject.Find("MenuPlayer");
         highscoreText = GameObject.Find("HighscoreText").GetComponent<Text>();
         StartButton = GameObject.Find("StartGameButton");
@@ -19,16 +20,18 @@ public class MenuController : MonoBehaviour {
 
     public void StartGame()
     {
+        Invoke("LoadLevel", 1f);
+
         Physics2D.gravity = new Vector2(0.0f, -9.8f); ;
         print(menuPlayer.GetComponent<Rigidbody2D>().gravityScale);
         menuPlayer.GetComponent<Rigidbody2D>().gravityScale *= -1;
         Instantiate(invertCircle, menuPlayer.transform.position, invertCircle.transform.rotation);
         StartButton.GetComponent<Button>().enabled = false;
-        Invoke("LoadLevel", 1f);
     }
 
     private void LoadLevel()
     {
         SceneManager.LoadScene("MainLevel");
     }
+
 }

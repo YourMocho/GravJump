@@ -6,10 +6,9 @@ using UnityEngine.UI;
 
 public class LevelCreator : MonoBehaviour {
 
-    
-
-    public List<LevelPiece> allPossibleLevelPieces;
-    public LevelPiece startingPiece;
+    public List<LevelPiece> allPossibleLevelPieces; //make private
+    public LevelPiece startingPiece;//make private
+    public LevelPiece tutorialPiece;//make private
 
     private List<LevelPiece> topPieces;
     private List<LevelPiece> bottomPieces;
@@ -69,6 +68,10 @@ public class LevelCreator : MonoBehaviour {
 
         //startingPiece = Resources.Load<LevelPiece>("Prefabs/StartPiece");
         startingPiece = GameObject.FindGameObjectWithTag("StartPiece").GetComponent<LevelPiece>();
+        startingPiece.gameObject.SetActive(false);
+
+        tutorialPiece = GameObject.FindGameObjectWithTag("TutorialPiece").GetComponent<LevelPiece>();
+        tutorialPiece.gameObject.SetActive(false);
     }   
 
     void Start()
@@ -252,10 +255,22 @@ public class LevelCreator : MonoBehaviour {
 
         } else
         {
-            print("start piece");
+            if (PlayerPrefs.GetInt("showTutorial", 1) == 1)
+            {
+                print("tutorial Piece");
 
-            tmpPiece = Instantiate(startingPiece.gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
-            tmpPiece.GetComponent<LevelPiece>().Setup();
+                tmpPiece = Instantiate(tutorialPiece.gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+                tmpPiece.GetComponent<LevelPiece>().Setup();
+                tmpPiece.GetComponent<LevelPiece>().MakeCheckpoint();
+            }
+            else
+            {
+                print("start piece");
+            
+                tmpPiece = Instantiate(startingPiece.gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+                tmpPiece.GetComponent<LevelPiece>().Setup();
+            }
+
         }
 
         tmpPiece.SetActive(true);

@@ -111,8 +111,11 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void FixedUpdate() { 
-       rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
+    void FixedUpdate() {
+        if (!GameManager.playerIsReseting)
+        {
+            rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
+        }
     }
 
     public void RemoveAllVelocity()

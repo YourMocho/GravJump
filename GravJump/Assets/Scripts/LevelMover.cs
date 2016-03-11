@@ -16,20 +16,10 @@ public class LevelMover : MonoBehaviour {
     }
 
 	void Update () {
-        if (GameManager.gameStarted && !GameManager.paused)
+        if (GameManager.gameStarted && !GameManager.paused && !GameManager.playerIsReseting)
         {
             rigidbody.MovePosition(rigidbody.position - movementVector * Time.deltaTime);
-
-           // levelSpawnPoint = transform.position.x - GameManager.player.transform.position.x; //point of players death
         } 
-    }
-
-    public void ChangeSpeed(float speed)
-    {
-        if (movementVector.x + speed > GameManager.minSpeed && movementVector.x + speed < GameManager.maxSpeed)
-        {
-            movementVector.x += speed;
-        }
     }
 
     public void SetSpeed(float speed)

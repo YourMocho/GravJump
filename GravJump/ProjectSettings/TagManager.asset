@@ -13,6 +13,7 @@ TagManager:
   - StartPiece
   - Checkpoint
   - LevelPiece
+  - TutorialPiece
   layers:
   - Default
   - TransparentFX

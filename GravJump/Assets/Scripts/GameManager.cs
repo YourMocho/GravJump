@@ -32,9 +32,8 @@ public class GameManager : MonoBehaviour {
     public static bool gameStarted;
     public static bool paused;
     public static int startSpeed;
-    public static int maxSpeed;
-    public static int minSpeed;
     public static bool gameOver;
+    public static bool playerIsReseting;
 
     public static Checkpoint lastCheckpoint;
 
@@ -47,6 +46,7 @@ public class GameManager : MonoBehaviour {
 
     void Awake()
     {
+        print("GM awake");
         screensParent.SetActive(true);
 
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
@@ -74,9 +74,9 @@ public class GameManager : MonoBehaviour {
         score = 0;
         paused = false;
         startSpeed = 10;
-        maxSpeed = 25;
-        minSpeed = 3;
         gameOver = false;
+        playerIsReseting = false;
+
         gravityIsDown = true;
         gravity = new Vector2(0.0f, -9.8f);
         //blockColour = new Color(212 / 255f, 125 / 255f, 67 / 255f);
@@ -118,9 +118,15 @@ public class GameManager : MonoBehaviour {
             scoreText.text = score.ToString();
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (playerIsReseting)
         {
-            ResetPlayerForPickUp();
+            playerController.GetComponent<Rigidbody2D>().velocity = new Vector2(levelMover.Xspeed, playerController.GetComponent<Rigidbody2D>().velocity.y);
+
+            if (playerController.transform.position.x >= 0)
+            {
+                playerController.transform.position = new Vector2(0, playerController.transform.position.y);
+                playerIsReseting = false;
+            }
         }
     }
 
@@ -128,7 +134,6 @@ public class GameManager : MonoBehaviour {
     {
         countdownScreen.SetActive(false);
 
-       // countdownText.text = "";
         gameStarted = true;
         Physics2D.gravity = gravity;
     }
@@ -176,13 +181,6 @@ public class GameManager : MonoBehaviour {
             pickUp.GetComponent<SpriteRenderer>().enabled = true;
             pickUp.GetComponent<CircleCollider2D>().enabled = true;
         }
-    }
-
-    public static void ResetPlayerForPickUp()
-    {
-        float x = playerController.spawnPoint.x - playerController.transform.position.x;
-        playerController.transform.position = new Vector3(playerController.spawnPoint.x, playerController.transform.position.y, 0);
-        levelMover.transform.Translate(new Vector3(x, 0, 0));
     }
 
     public static void ResetMapToSpawnPoint()

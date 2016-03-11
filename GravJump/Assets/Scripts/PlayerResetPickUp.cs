@@ -8,7 +8,7 @@ public class PlayerResetPickUp : MonoBehaviour {
     {
         if (collider.tag.Equals("Player"))
         {
-            GameManager.ResetPlayerForPickUp();
+            GameManager.playerIsReseting = true;
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<CircleCollider2D>().enabled = false;
         }
