@@ -14,13 +14,16 @@ public class LevelPiece : MonoBehaviour {
     public int difficulty;
     public int startDirection;
     public int endDirection;
+
+    [HideInInspector]
     public Transform endPos;
 
+    [HideInInspector]
     public bool upsideDown;
 
     public Checkpoint checkpoint; //make private
 
-    public List<InvisibleBlockController> invisibleBlocks;
+    public List<InvisibleBlockController> invisibleBlocks; //private pls
 
     public void Setup () {
         upsideDown = false;
@@ -32,15 +35,18 @@ public class LevelPiece : MonoBehaviour {
         {
             checkpoint = transform.FindChild("Checkpoint").GetComponent<Checkpoint>();
             checkpoint.SetVisibility(false);
-
             checkpoint.Setup();
+
+            if (tag.Equals("TutorialPiece"))
+            {
+                transform.FindChild("Checkpoint2").GetComponent<Checkpoint>().SetVisibility(false);
+                transform.FindChild("Checkpoint2").GetComponent<Checkpoint>().Setup();
+            }
         }
 
         invisibleBlocks = new List<InvisibleBlockController>();
 
         FindInvisibleBlocks();
-
-
     }
 
     public void MakeCheckpoint()
@@ -49,7 +55,12 @@ public class LevelPiece : MonoBehaviour {
         {
             checkpoint.SetVisibility(true);
 
-            if(GameManager.levelCreator.increaseMaxDifficultyWithEachCheckpoint)
+            if (tag.Equals("TutorialPiece"))
+            {
+                transform.FindChild("Checkpoint2").GetComponent<Checkpoint>().SetVisibility(true);
+            }
+
+            if (GameManager.levelCreator.increaseMaxDifficultyWithEachCheckpoint)
             {
                 GameManager.levelCreator.maxDifficulty++;
             }

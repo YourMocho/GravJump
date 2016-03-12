@@ -30,7 +30,10 @@ public class Checkpoint : MonoBehaviour {
 
         startingPosition = new Vector3(x, transform.position.y, 0);
 
-        CreateFlagText();
+        if (transform.parent.tag != "TutorialPiece")
+        {
+            CreateFlagText();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -44,15 +47,19 @@ public class Checkpoint : MonoBehaviour {
 
     public void UpdateRespawnNumber()
     {
-        print("respawn number before: " + respawnNumber);
-        respawnNumber--;
+        if (transform.parent.tag != "TutorialPiece")
+        {
+            print("respawn number before: " + respawnNumber);
+            respawnNumber--;
 
-        if(respawnNumber < 0)
-        {
-            GameManager.GameOver();
-        } else
-        {
-            respawnText.text = respawnNumber.ToString();
+            if (respawnNumber < 0)
+            {
+                GameManager.GameOver();
+            }
+            else
+            {
+                respawnText.text = respawnNumber.ToString();
+            }
         }
     }
 

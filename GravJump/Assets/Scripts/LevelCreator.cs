@@ -15,6 +15,7 @@ public class LevelCreator : MonoBehaviour {
     private List<LevelPiece> bothPieces;
 
     public List<LevelPiece> currentLevelPieces; //private plssss
+    private int lastLevelPieceIndex = -1;
     private Transform nextPieceSpawnpoint;
     private float rightBoundary;
 
@@ -216,9 +217,19 @@ public class LevelCreator : MonoBehaviour {
                 {
                     foundPiece = true;
                 }
+
                 if (foundPiece)
                 {
-                    if (cumulitiveDifficulty + allPossibleLevelPieces[randomIndex].difficulty > difficultyPerCheckpoint + allowedDifficultyOverflow)
+                    //if this piece is the same as the last piece
+                    if(randomIndex == lastLevelPieceIndex)
+                    {
+                        foundPiece = false;
+                        randomIndex = (int)Random.Range(0f, allPossibleLevelPieces.Count);
+                    }
+
+
+                    //if using dif per piece as checkpoint creation criteria and (cumDif + this pieces dif) is more than (allowed dif per checkpoint + allowedoverflow)
+                    if (!useCheckpointsInsteadOfDifficulty && cumulitiveDifficulty + allPossibleLevelPieces[randomIndex].difficulty > difficultyPerCheckpoint + allowedDifficultyOverflow)
                     {
                        // print("over overflow dif - piece " + allPossibleLevelPieces[randomIndex].name);
                         foundPiece = false;
@@ -229,6 +240,7 @@ public class LevelCreator : MonoBehaviour {
             }
 
             tmpPiece = Instantiate(allPossibleLevelPieces[randomIndex].gameObject, nextPieceSpawnpoint.position, Quaternion.identity) as GameObject;
+            lastLevelPieceIndex = randomIndex;
 
             print("instantiated new piece: " +tmpPiece.name);
 
