@@ -21,9 +21,6 @@ public class InvisibleBlockController : MonoBehaviour {
         {
             Hide();
         }
-        //print("setup invBlock: " + name + " isVisible: " + visible + " isInvertedBlock: " + invertedBlock + " GRavityIsdown: " + GameManager.gravityIsDown);
-
-        renderer.color = GameManager.blockColour;
     }
 
     public void Hide()
@@ -62,4 +59,17 @@ public class InvisibleBlockController : MonoBehaviour {
         }
     }
 
+    void OnDrawGizmos()
+    {
+        if (invertedBlock)
+        {
+            Gizmos.color = Color.cyan;
+        } else
+        {
+            Gizmos.color = Color.green;
+        }
+
+        Gizmos.DrawCube(transform.position, transform.localScale * 2);
+
+    }
 }

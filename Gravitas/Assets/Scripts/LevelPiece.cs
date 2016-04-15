@@ -41,6 +41,9 @@ public class LevelPiece : MonoBehaviour {
             {
                 transform.FindChild("Checkpoint2").GetComponent<Checkpoint>().SetVisibility(false);
                 transform.FindChild("Checkpoint2").GetComponent<Checkpoint>().Setup();
+
+                transform.FindChild("Checkpoint3").GetComponent<Checkpoint>().SetVisibility(false);
+                transform.FindChild("Checkpoint3").GetComponent<Checkpoint>().Setup();
             }
         }
 
@@ -58,6 +61,7 @@ public class LevelPiece : MonoBehaviour {
             if (tag.Equals("TutorialPiece"))
             {
                 transform.FindChild("Checkpoint2").GetComponent<Checkpoint>().SetVisibility(true);
+                transform.FindChild("Checkpoint3").GetComponent<Checkpoint>().SetVisibility(true);
             }
 
             if (GameManager.levelCreator.increaseMaxDifficultyWithEachCheckpoint)

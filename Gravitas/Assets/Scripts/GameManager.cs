@@ -41,9 +41,6 @@ public class GameManager : MonoBehaviour {
 
     public static Vector2 gravity;
 
-    public static Color blockColour;
-   // public static Color blockColour = new Color(43/255f, 130/ 255f,188/ 255f); //inverted
-
     void Awake()
     {
         print("GM awake");
@@ -79,8 +76,6 @@ public class GameManager : MonoBehaviour {
 
         gravityIsDown = true;
         gravity = new Vector2(0.0f, -9.8f);
-        //blockColour = new Color(212 / 255f, 125 / 255f, 67 / 255f);
-        blockColour = new Color(181 / 255f, 151 / 255f, 85 / 255f);
     }
 
     void Start() { 

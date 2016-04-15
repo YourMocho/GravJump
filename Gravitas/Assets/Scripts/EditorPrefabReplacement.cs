@@ -9,6 +9,7 @@ public class EditorPrefabReplacement : MonoBehaviour {
     public GameObject invisibleBlockINVERTED;
     public GameObject checkPoint;
     public GameObject gravityPickUp;
+    public GameObject gap;
 
     void Start () {
 
@@ -91,6 +92,21 @@ public class EditorPrefabReplacement : MonoBehaviour {
             {
                 print("nope");
             }
+        }
+        
+
+        GameObject[] gapBlocks = GameObject.FindGameObjectsWithTag("Gap");
+
+        foreach (GameObject gapBlock in gapBlocks)
+        {
+            GameObject tmp = PrefabUtility.InstantiatePrefab(gap) as GameObject;
+
+            tmp.transform.position = gapBlock.transform.position;
+            tmp.transform.rotation = gapBlock.transform.rotation;
+            tmp.transform.localScale = gapBlock.transform.localScale;
+            tmp.transform.parent = gapBlock.transform.parent;
+
+            DestroyImmediate(gapBlock.gameObject);
         }
         */
     }

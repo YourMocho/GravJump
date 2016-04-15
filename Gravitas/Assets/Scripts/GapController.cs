@@ -9,7 +9,6 @@ public class GapController : MonoBehaviour {
     {
         spring = GetComponent<SpringJoint2D>();
         spring.enabled = false;
-        GetComponent<SpriteRenderer>().enabled = false;
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -44,5 +43,11 @@ public class GapController : MonoBehaviour {
         {
             spring.enabled = false;
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        Gizmos.DrawCube(transform.position, transform.localScale * 2);
     }
 }

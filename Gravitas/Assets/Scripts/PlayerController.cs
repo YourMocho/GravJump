@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         Vector3 trailDir = new Vector3(GameManager.levelMover.Xspeed, rigidbody.velocity.y, 0) + transform.position;
-        print(trailDir);
+        //print(trailDir);
         transform.GetChild(4).transform.LookAt(trailDir);
     }
 
