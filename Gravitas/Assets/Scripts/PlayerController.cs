@@ -91,11 +91,11 @@ public class PlayerController : MonoBehaviour {
         if (useTrail)
         {
             CreateTrail();
+     
+            Vector3 trailDir = new Vector3(GameManager.levelMover.Xspeed, rigidbody.velocity.y, 0) + transform.position;
+            //print(trailDir);
+            transform.GetChild(4).transform.LookAt(trailDir);
         }
-
-        Vector3 trailDir = new Vector3(GameManager.levelMover.Xspeed, rigidbody.velocity.y, 0) + transform.position;
-        //print(trailDir);
-        transform.GetChild(4).transform.LookAt(trailDir);
     }
 
     private void CreateTrail()

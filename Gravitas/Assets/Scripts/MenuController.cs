@@ -12,12 +12,22 @@ public class MenuController : MonoBehaviour {
     private GameObject StartButton;
     // private bool showTutorial;
     private bool increaseChromatic = false;
+    private Camera[] cameras;
+    private VignetteAndChromaticAberration chromaticAbberationCamera;
 
     void Awake () {
         menuPlayer = GameObject.Find("MenuPlayer");
         highscoreText = GameObject.Find("HighscoreText").GetComponent<Text>();
         StartButton = GameObject.Find("StartGameButton");
         highscoreText.text = "Highscore: " + PlayerPrefs.GetInt("score").ToString();
+        cameras = Camera.allCameras;
+        foreach (Camera c in cameras)
+        {
+            if (c.name.Equals("Platform Camera Normal"))
+            {
+                chromaticAbberationCamera = c.GetComponent<VignetteAndChromaticAberration>();
+            }
+        }
     }
 
     public void StartGame()
@@ -36,7 +46,7 @@ public class MenuController : MonoBehaviour {
     {
         if(increaseChromatic)
         {
-            Camera.main.GetComponent<VignetteAndChromaticAberration>().chromaticAberration += 15f * Time.deltaTime;
+            chromaticAbberationCamera.chromaticAberration += 15f * Time.deltaTime;
         }
     }
 

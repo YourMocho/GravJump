@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: New Material
-  m_Shader: {fileID: 10755, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: BackgroundGradientOverlay
+  m_Shader: {fileID: 4800000, guid: ccfd392a5eaa2d24190a0f5ffbc4c458, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2000
@@ -127,6 +127,14 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _X
+        second: 0
+      data:
+        first:
+          name: _Y
+        second: 1
     m_Colors:
       data:
         first:
@@ -135,4 +143,12 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 1, g: 0, b: 0, a: 1}
+        second: {r: 0.41176468, g: 0.41176468, b: 0.41176468, a: 0.172}
+      data:
+        first:
+          name: _Color2
+        second: {r: 1, g: 0.27205884, b: 0.27205884, a: 1}
+      data:
+        first:
+          name: _Color3
+        second: {r: 0.34612885, g: 0.6689292, b: 0.71323526, a: 1}
